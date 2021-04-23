@@ -2,13 +2,12 @@ package map;
 
 import objects.Food;
 import objects.Item;
-import objects.foods.*;
-import objects.items.*;
+import objects.foods.Kabitoszer;
+import objects.foods.Whiskey;
+import objects.items.Bozotvago;
+import objects.items.Kincs;
 import team.Felfedezo;
 import team.characters.Character;
-import team.characters.Felderito;
-import team.characters.Katona;
-import team.characters.Kereskedo;
 import team.slots.Slot;
 
 import javax.swing.*;
@@ -17,19 +16,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
-
 import java.util.Scanner;
 
 import static map.RandomNumber.randomNumber;
 
 public class Show extends JFrame implements ActionListener {
 
-    static int lines = 0;
-    static int columns = 0;
+    static int lines = 0; //sorok szama a fajlban
+    static int columns = 0; //oszlopok szama
     static String[] lvl = new String[20]; //beolvasott txt fajlbol
     static Map[][] map = new Map[20][20]; //Map elemeket tartalmazo terkep
     static JButton[][] buttons = new JButton[20][20]; //gombmatrix
-    static int fuggolepes=0;
+    static int fuggolepes=0; //ha jozsi fuggo, akkor szamoljuk a lepeskeet
 
     private JLabel energiaLabel;
     private JLabel aranyLabel;
@@ -60,17 +58,18 @@ public class Show extends JFrame implements ActionListener {
     private JButton buttonStart;
     private JButton buttonStop;
 
-
+    //jozsi tartozkodasi helye
     static int x =0;
     static int y=0;
-    private static char mission='1';
+    private static char mission='1'; //kuldetesek szama
 
     private static Hajo h;
     public static Felfedezo jozsi = new Felfedezo();
     public static Piramis p;
-    private static InitShopList isl;
+    private static InitShopList isl; //kuldetes elotti cuccok vasarlasa
     private static boolean canStart;
 
+    //beolvassa a txt bol a terkepet
     public static void read(){
 
         lines = 0;
@@ -85,8 +84,9 @@ public class Show extends JFrame implements ActionListener {
             columns=lvl[0].length();
             myReader.close();
         } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
+            System.out.println("An error occurred. Generating random map...");
             e.printStackTrace();
+            GenerateRandomMap.genRanMap(mission);
         }
     }
 
@@ -150,6 +150,7 @@ public class Show extends JFrame implements ActionListener {
 //                "\nJó szórakozást!");
     }
 
+    //mit akarunk venni az elejen
     private void initBuy(){
 
         labelInitBuy = new JLabel("Eszkozok:");
@@ -173,6 +174,7 @@ public class Show extends JFrame implements ActionListener {
         add(buttonStart);
     }
 
+    //inicalizalja a gombok ikonjat
     private void initPaint(int i,int j){
         Ures ures = new Ures();
         switch (lvl[i].charAt(j)){
@@ -191,12 +193,14 @@ public class Show extends JFrame implements ActionListener {
         }
     }
 
+    //visszafesti az a gombot ahonnan ellepett jozsi
     private void paint(int i,int j){
         buttons[i][j].setIcon(new ImageIcon(map[i][j].getImg()));
     }
 
+    //jozsit kirajzolja
     private void paintFicko(){
-        int latokor = 1;
+        int latokor = 1; //pl ha van felderitonk akkor nagyobb korben latunk
         if(jozsi.containsFelderito()){
             latokor = 2;
         }
@@ -398,16 +402,16 @@ public class Show extends JFrame implements ActionListener {
         //use gomb
         if(e.getSource()== buttonUse){
             Slot i = (Slot) boxInventory.getSelectedObjects()[0];
-            if(i.getSlots()[0] instanceof Food){
+            if(i.getSlots()[0] instanceof Food && i.getSlots()!=null){
                 jozsi.consumeFood((Food) i.getSlots()[0]); //konzumalja mint FOOD
-                if(jozsi.containsKereskedo() && (i.getSlots()[0] instanceof Whiskey)){ //ha van katona, es whiskeyt ittal akkor +20 energia
+                if(jozsi.containsKereskedo() && (i.getSlots()[0] instanceof Whiskey)){ //ha van katona, es whiskeyt ittal akkor +20% energia
                     jozsi.setEnergia(jozsi.getEnergia()*1.2);
                 }
-                if(jozsi.containsSaman() && (i.getSlots()[0] instanceof Kabitoszer)){ //ha van katona, es whiskeyt ittal akkor +20 energia
+                if(jozsi.containsSaman() && (i.getSlots()[0] instanceof Kabitoszer)){ //ha van saman, és kábsziztál akkor +20% enegeria
                     jozsi.setEnergia(jozsi.getEnergia()*1.2);
                 }
             }
-            if(i.getSlots()[0] instanceof Bozotvago && map[x][y] instanceof Jungle){ //ez tipikusan a bozotvagora valo
+            if(i.getSlots()[0] instanceof Bozotvago && map[x][y] instanceof Jungle && i.getSlots()!=null){ //ez tipikusan a bozotvagora valo
                 jozsi.consumeItem((Item) i.getSlots()[0]); //elhasználja mint ITEM
                 map[x][y]=new Fold();
                 paintFicko();
@@ -419,11 +423,13 @@ public class Show extends JFrame implements ActionListener {
         //eltarol gomb
         if(e.getSource()==buttonEltarol){
             Slot s = (Slot) boxInventory.getSelectedObjects()[0];
-            h.elraktaroz(s.getSlots()[0]);
-            System.out.println(s.getSlots()[0] + "+" + h.getRaktar()[0]);
-            jozsi.consumeItem(s.getSlots()[0]);
-            boxHajoInv.setModel(new DefaultComboBoxModel(h.getRaktar()));
-            boxInventory.setModel(new DefaultComboBoxModel(jozsi.getInventory()));
+            if(s.getSlots()!=null){
+                h.elraktaroz(s.getSlots()[0]);
+                System.out.println(s.getSlots()[0] + "+" + h.getRaktar()[0]);
+                jozsi.consumeItem(s.getSlots()[0]);
+                boxHajoInv.setModel(new DefaultComboBoxModel(h.getRaktar()));
+                boxInventory.setModel(new DefaultComboBoxModel(jozsi.getInventory()));
+            }
 
         }
 
@@ -443,7 +449,7 @@ public class Show extends JFrame implements ActionListener {
                     akcio = 0.8;
                 }
                 Slot s = (Slot) boxFaluInv.getSelectedObjects()[0];
-                if(jozsi.getArany()>=(int)(akcio*s.getSlots()[0].getErtek())){
+                if(jozsi.getArany()>=(int)(akcio*s.getSlots()[0].getErtek()) && s.getSlots()!=null){
                     map[x][y].consumeItem(s.getSlots()[0]);
                     jozsi.addSlot(s.getSlots()[0]);
                     jozsi.setArany(jozsi.getArany()-(int)(akcio*s.getSlots()[0].getErtek()));
@@ -461,7 +467,7 @@ public class Show extends JFrame implements ActionListener {
                 akcio = 0.8;
             }
             Character s = (Character) boxChar.getSelectedObjects()[0];
-            if(jozsi.getArany()>=(int)(akcio*150) && jozsi.countTeam()<3){
+            if(jozsi.getArany()>=(int)(akcio*150) && jozsi.countTeam()<3 && boxChar.getSelectedObjects()!=null){
                 map[x][y].buyCharacter(s);
                 jozsi.addCharacter(s);
                 jozsi.setArany(jozsi.getArany()-(int)(akcio*150));
@@ -478,22 +484,27 @@ public class Show extends JFrame implements ActionListener {
                 akcio = 1.2;
             }
             Slot s = (Slot) boxInventory.getSelectedObjects()[0];
-            jozsi.consumeItem(s.getSlots()[0]);
-            jozsi.setArany(jozsi.getArany()+(int)(akcio*s.getSlots()[0].getErtek()));
-            boxInventory.setModel(new DefaultComboBoxModel(jozsi.getInventory()));
-            aranyLabel.setText("Arany:"+jozsi.getArany());
+            if(s.getSlots()!=null){
+                int ind = boxInventory.getSelectedIndex();
+                jozsi.consumeItem(ind);
+                jozsi.setArany(jozsi.getArany()+(int)(akcio*s.getSlots()[0].getErtek()));
+                boxInventory.setModel(new DefaultComboBoxModel(jozsi.getInventory()));
+                aranyLabel.setText("Arany:"+jozsi.getArany());
+            }
         }
 
         //uj kuldetes gomb
         if(e.getSource()==buttonNewMission){
-            if(mission<'2'){
+            if(mission<'5'){
                 JOptionPane.showMessageDialog(this,"Sikeresen befejezted a kuldetest");
                 canStart=false;
                 mission++;
+                jozsi.incrementRivals();
                 getContentPane().removeAll();
                 repaint();
                 read();
                 initComponents();
+                JOptionPane.showMessageDialog(this,jozsi.printRivals());
             }else{
                 JOptionPane.showMessageDialog(this,"Sikeresen befejezted a jatekot");
                 dispose();
@@ -505,7 +516,7 @@ public class Show extends JFrame implements ActionListener {
         if(e.getSource()==buttonKincsHirnev){
             Slot s = (Slot) boxInventory.getSelectedObjects()[0];
             int ind = boxInventory.getSelectedIndex();
-            if(s.getSlots()[0] instanceof Kincs){
+            if(s.getSlots()[0] instanceof Kincs && s.getSlots()!=null){
                 jozsi.consumeItem(ind);
                 jozsi.setHirnev(jozsi.getHirnev()+s.getSlots()[0].getErtek());
                 boxInventory.setModel(new DefaultComboBoxModel(jozsi.getInventory()));
@@ -516,7 +527,7 @@ public class Show extends JFrame implements ActionListener {
         //cucct vesz kuldetes elott
         if(e.getSource()==buttonInitBuy){
             Slot s = (Slot) boxInitBuy.getSelectedObjects()[0];
-            if(jozsi.getArany()>=s.getSlots()[0].getErtek()){
+            if(jozsi.getArany()>=s.getSlots()[0].getErtek() && s.getSlots()!=null){
                 isl.consumeItem(s.getSlots()[0]);
                 jozsi.addSlot(s.getSlots()[0]);
                 jozsi.setArany(jozsi.getArany()-s.getSlots()[0].getErtek());
@@ -529,7 +540,7 @@ public class Show extends JFrame implements ActionListener {
         //csapattarsat vesz kuldetes elott
         if(e.getSource()==buttonInitChar){
             Character s = (Character) boxInitChar.getSelectedObjects()[0];
-            if(jozsi.getArany()>=150 && jozsi.countTeam()<3){
+            if(jozsi.getArany()>=150 && jozsi.countTeam()<3 && s!=null){
                 isl.buyCharacter(s);
                 jozsi.addCharacter(s);
                 jozsi.setArany(jozsi.getArany()-150);

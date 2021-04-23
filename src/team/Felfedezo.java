@@ -21,8 +21,8 @@ public class Felfedezo {
     protected boolean fuggo;
     protected Slot[] inventory = new Slot[20];
     protected Character[] teammates = new Character[3];
-    //protected Rival[] rivals = new Rival[3];
-    private String[] nevek = {"Szándokán","Winnetou","Jónás Indián"};
+    protected Rival[] rivals = new Rival[4];
+    private String[] nevek = {"Szándokán","Winnetou","Dzseszperó","Te"};
 
     public Felfedezo() {
         this.arany = 250;
@@ -32,10 +32,11 @@ public class Felfedezo {
         this.alkoholista=false;
         this.fuggo=false;
         int r = randomNumber(0,100);
-//        for(int i=0;i<3;i++){
-//            rivals[i].setNev(nevek[i]);
-//            rivals[i].setHirnev(1000+r);
-//        }
+        for(int i=0;i<4;i++){
+            Rival rival = new Rival(nevek[i],0);
+            rivals[i]=rival;
+        }
+        rivals[3].setHirnev(this.hirnev);
     }
 
     public int getArany() {
@@ -119,7 +120,7 @@ public class Felfedezo {
     }
     public void removeCharacter(int index){ //torles index alapjan
         teammates[index]=null;
-    }
+    } //torles index alapjan
 
     public void removeCharacter(){ // kitorli az utolso maradt karatert, mert csak akkor hivodik meg ha mar csak 1 maradt
         for(int i = 0; i<3;i++){
@@ -316,5 +317,42 @@ public class Felfedezo {
             }
         }
         return false;
+    }
+
+    //rendezi a rivalisokak hirnev mennyisege szerint
+    public void sortRivals(){
+        for (int i = 0; i <3; i++)
+        {
+            int index = i;
+            for (int j = i + 1; j < 4; j++){
+                if (rivals[j].getHirnev() > rivals[index].getHirnev()){
+                    index = j;//searching for lowest index
+                }
+            }
+            Rival smallerNumber = rivals[index];
+            rivals[index] = rivals[i];
+            rivals[i] = smallerNumber;
+        }
+    }
+
+    //random megnoveli a rivalisok hirnevet
+    public void incrementRivals(){
+        for(int i=0;i<4;i++){
+            int r = randomNumber(0,100);
+            if(!rivals[i].getNev().equals("Te")){
+                rivals[i].setHirnev(rivals[i].getHirnev()+1000+r);
+            }else{
+                rivals[i].setHirnev(this.hirnev);
+            }
+        }
+        sortRivals();
+    }
+
+    public String printRivals(){
+        String s = "";
+        for(int i=0;i<4;i++){
+            s = s + (i+1) + ". " + rivals[i].getNev() + ":" + rivals[i].getHirnev() + "\n";
+        }
+        return s;
     }
 }
