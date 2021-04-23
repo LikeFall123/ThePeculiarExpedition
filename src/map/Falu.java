@@ -78,18 +78,16 @@ public class Falu extends Map{
         }
     }
 
-    public void consumeItem(Item item){
-        for (int i = 0; i < 20; i++) {
-            if (forSale[i] != null) {
-                if (forSale[i].getSlots()[0].getClass() == item.getClass()) {
-                    if(forSale[i].getSlots()[1]==null){
-                        forSale[i]=null;
-                    }else{
-                        for(int j=0;j<6;j++){
-                            if(forSale[i].getSlots()[j]!=null && forSale[i].getSlots()[j+1]==null){
-                                forSale[i].getSlots()[j]=null;
-                            }
-                        }
+    public void consumeItem(int ind) {
+        if (forSale[ind] != null) {
+            if (forSale[ind].getSlots()[1] == null) {
+                forSale[ind] = null;
+            } else if (forSale[ind].getSlots()[6] != null) {
+                forSale[ind].getSlots()[6] = null;
+            } else {
+                for (int j = 0; j < 6; j++) {
+                    if (forSale[ind].getSlots()[j] != null && forSale[ind].getSlots()[j + 1] == null) {
+                        forSale[ind].getSlots()[j] = null;
                     }
                 }
             }

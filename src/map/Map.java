@@ -34,7 +34,7 @@ public class Map {
 
     public int getKoltseg(){ return koltseg; }
 
-    public void consumeItem(Item slot) {
+    public void consumeItem(int ind) {
     }
 
     public Object[] getForSale() {

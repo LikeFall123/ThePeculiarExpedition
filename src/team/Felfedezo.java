@@ -18,23 +18,25 @@ public class Felfedezo {
     protected int mozgas;
     protected int hirnev;
     protected boolean alkoholista;
+    protected int hanyadikWhisky;
+    protected int hanyadikKabszi;
     protected boolean fuggo;
     protected Slot[] inventory = new Slot[20];
     protected Character[] teammates = new Character[3];
     protected Rival[] rivals = new Rival[4];
-    private String[] nevek = {"Szándokán","Winnetou","Dzseszperó","Te"};
+    private String[] nevek = {"Szándokán", "Winnetou", "Dzseszperó", "Te"};
 
     public Felfedezo() {
         this.arany = 250;
         this.energia = 100;
         this.mozgas = 100; //%-ban merve
-        this.hirnev=0;
-        this.alkoholista=false;
-        this.fuggo=false;
-        int r = randomNumber(0,100);
-        for(int i=0;i<4;i++){
-            Rival rival = new Rival(nevek[i],0);
-            rivals[i]=rival;
+        this.hirnev = 0;
+        this.alkoholista = false;
+        this.fuggo = false;
+        int r = randomNumber(0, 100);
+        for (int i = 0; i < 4; i++) {
+            Rival rival = new Rival(nevek[i], 0);
+            rivals[i] = rival;
         }
         rivals[3].setHirnev(this.hirnev);
     }
@@ -51,12 +53,12 @@ public class Felfedezo {
         return energia;
     }
 
-    public void setEnergia(double energia){
-        if(energia>100){
-            this.energia=100;
-        }else if(energia<=0){
-            this.energia=0;
-        }else{
+    public void setEnergia(double energia) {
+        if (energia > 100) {
+            this.energia = 100;
+        } else if (energia <= 0) {
+            this.energia = 0;
+        } else {
             this.energia = energia;
         }
     }
@@ -101,93 +103,96 @@ public class Felfedezo {
         this.fuggo = fuggo;
     }
 
-    public void addCharacter(Character character){
-        for(int i=0;i<3;i++){
-            if(teammates[i]==null){
-                teammates[i]=character;
-                this.mozgas+=15;
+    public void addCharacter(Character character) {
+        for (int i = 0; i < 3; i++) {
+            if (teammates[i] == null) {
+                teammates[i] = character;
+                this.mozgas += 15;
                 break;
             }
         }
     }
 
-    public void removeCharacter(Character character){ //torles charakter alapjan
-        for(int i = 0; i<3;i++){
-            if(teammates[i]==character){
-                teammates[i]=null;
+    public void removeCharacter(Character character) { //torles charakter alapjan
+        for (int i = 0; i < 3; i++) {
+            if (teammates[i] == character) {
+                teammates[i] = null;
             }
         }
     }
-    public void removeCharacter(int index){ //torles index alapjan
-        teammates[index]=null;
-    } //torles index alapjan
 
-    public void removeCharacter(){ // kitorli az utolso maradt karatert, mert csak akkor hivodik meg ha mar csak 1 maradt
-        for(int i = 0; i<3;i++){
-            if(teammates[i]!=null){
-                teammates[i]=null;
+    public void removeCharacter(int index) { //torles index alapjan
+        teammates[index] = null;
+        this.mozgas -= 15;
+    }
+
+    public void removeCharacter() { // kitorli az utolso maradt karatert, mert csak akkor hivodik meg ha mar csak 1 maradt
+        for (int i = 0; i < 3; i++) {
+            if (teammates[i] != null) {
+                teammates[i] = null;
+                this.mozgas -= 15;
                 break;
             }
         }
     }
 
-    public int countTeam(){
+    public int countTeam() {
         int k = 0;
-        for(int i=0;i<3;i++){
-            if(teammates[i]!=null){
+        for (int i = 0; i < 3; i++) {
+            if (teammates[i] != null) {
                 k++;
             }
         }
         return k;
     }
 
-    public int countSlots(){
-        int k=0;
-        for(int i=0;i<20;i++){
-            if(inventory[i]!=null){
+    public int countSlots() {
+        int k = 0;
+        for (int i = 0; i < 20; i++) {
+            if (inventory[i] != null) {
                 k++;
             }
         }
         return k;
     }
 
-    public void addSlot(Item item){
-        for(int i=0;i<20;i++){
-            if(inventory[i]==null){
+    public void addSlot(Item item) {
+        for (int i = 0; i < 20; i++) {
+            if (inventory[i] == null) {
                 inventory[i] = new Slot(item);
                 break;
-            }else{
-                if(inventory[i].addItem(item)==false){
+            } else {
+                if (inventory[i].addItem(item) == false) {
                     continue;
-                }else {
+                } else {
                     break;
                 }
             }
         }
         //ha van szamar, akkor a 8 helyett (+2 slot) 10 lehet
         int max = 8;
-        if(this.containsSzamar()){
+        if (this.containsSzamar()) {
             max = 10;
         }
-        if(countSlots()>8){
-            this.setMozgas(100+(countSlots()-7)*20);
+        if (countSlots() > max) {
+            this.setMozgas(100 + (countSlots() - max) * 20);
         }
     }
 
-    public void printTeam(){
-        for(int i=0;i<3;i++){
-            if(teammates[i]!=null){
+    public void printTeam() {
+        for (int i = 0; i < 3; i++) {
+            if (teammates[i] != null) {
                 System.out.println(teammates[i].getFajta());
             }
         }
     }
 
-    public void printInventory(){
-        for(int i=0;i<20;i++){
+    public void printInventory() {
+        for (int i = 0; i < 20; i++) {
             int num = 0;
-            if(inventory[i]!=null){
-                for(int j=0;j<7;j++){
-                    if(inventory[i].getSlots()[j]!=null){
+            if (inventory[i] != null) {
+                for (int j = 0; j < 7; j++) {
+                    if (inventory[i].getSlots()[j] != null) {
                         num++;
                     }
                 }
@@ -196,123 +201,140 @@ public class Felfedezo {
         }
     }
 
-    public void fuggoseg(Food food){
-        if(food instanceof Whiskey){
-            int r = randomNumber(0,100);
-            if(r<15){
-                this.setAlkoholista(true);
-            }
-        }
-        if(food instanceof Kabitoszer){
-            int r = randomNumber(0,100);
-            if(r<15){
-                this.setFuggo(true);
-            }
-        }
-        if(!(food instanceof Kabitoszer) && !(food instanceof Whiskey)){
-            this.setFuggo(false);
-        }
-    }
-
-    public void consumeFood(Food food) {
-        for (int i = 0; i < 20; i++) {
-            if (inventory[i] != null) {
-                if (inventory[i].getSlots()[0].getClass() == food.getClass()) {
-                    if(inventory[i].getSlots()[1]==null){
-                        fuggoseg(food);
-                        inventory[i]=null;
-                        setEnergia(this.energia+food.getBonus());
-                    }else{
-                        for(int j=0;j<6;j++){
-                            if(inventory[i].getSlots()[j]!=null && inventory[i].getSlots()[j+1]==null){
-                                fuggoseg(food);
-                                inventory[i].getSlots()[j]=null;
-                                setEnergia(this.energia+food.getBonus());
-                            }
-                        }
+    public void fuggoseg(Food food, int charInd) {
+        if (food instanceof Whiskey) {
+            hanyadikWhisky++;
+            if (hanyadikWhisky >= 2) {
+                int r = randomNumber(0, 100);
+                if (r < 15) {
+                    if (charInd<0) {
+                        this.setAlkoholista(true);
+                    } else {
+                        this.teammates[charInd].setFuggo(true);
                     }
                 }
             }
         }
-        //ha van szamar, akkor a 8 helyett (+2 slot) 10 lehet
-        int max = 8;
-        if(this.containsSzamar()){
-            max = 10;
-        }
-        if(countSlots()>8){
-            this.setMozgas(100+(countSlots()-7)*20);
-        }
-    }
-
-    public void consumeItem(Item item){
-        for (int i = 0; i < 20; i++) {
-            if (inventory[i] != null) {
-                if (inventory[i].getSlots()[0].getClass() == item.getClass()) {
-                    if(inventory[i].getSlots()[1]==null){
-                        inventory[i]=null;
-                        break;
-                    }else{
-                        for(int j=0;j<6;j++){
-                            if(inventory[i].getSlots()[j]!=null && inventory[i].getSlots()[j+1]==null){
-                                inventory[i].getSlots()[j]=null;
-                            }
-                        }
+        if (food instanceof Kabitoszer) {
+            hanyadikKabszi++;
+            if (hanyadikKabszi >= 2) {
+                int r = randomNumber(0, 100);
+                if (r < 15) {
+                    if (charInd<0) {
+                        this.setFuggo(true);
+                    } else {
+                        this.teammates[charInd].setFuggo(true);
                     }
                 }
             }
         }
-        //ha van szamar, akkor a 8 helyett (+2 slot) 10 lehet
-        int max = 8;
-        if(this.containsSzamar()){
-            max = 10;
-        }
-        if(countSlots()>8){
-            this.setMozgas(100+(countSlots()-7)*20);
+        if (!(food instanceof Kabitoszer) && !(food instanceof Whiskey)) {
+            hanyadikKabszi = 0;
+            hanyadikWhisky = 0;
+            if (charInd<0) {
+                this.setFuggo(false);
+                this.setAlkoholista(false);
+            } else {
+                this.teammates[charInd].setFuggo(false);
+                this.teammates[charInd].setAlkoholista(false);
+            }
         }
     }
 
-    public void consumeItem(int ind){
-        inventory[ind]=null;
-        if(countSlots()>7){
-            this.setMozgas(100+(countSlots()-7)*20);
+
+    public void consumeFood(Food food, int foodIndex, int charIndex) {
+        if (inventory[foodIndex] != null) {
+            if (inventory[foodIndex].getSlots()[1] == null) {
+                fuggoseg(food, charIndex);
+                inventory[foodIndex] = null;
+                setEnergia(this.energia + food.getBonus());
+                //ha van szamar, akkor a 8 helyett (+2 slot) 10 lehet
+                int max = 8;
+                if (this.containsSzamar()) {
+                    max = 10;
+                }
+                if (countSlots() > max) {
+                    this.setMozgas(this.getMozgas() - 20);
+                }
+            } else if (inventory[foodIndex].getSlots()[6] != null) {
+                inventory[foodIndex].getSlots()[6] = null;
+            } else {
+                for (int j = 0; j < 6; j++) {
+                    if (inventory[foodIndex].getSlots()[j] != null && inventory[foodIndex].getSlots()[j + 1] == null) {
+                        fuggoseg(food, charIndex);
+                        inventory[foodIndex].getSlots()[j] = null;
+                        setEnergia(this.energia + food.getBonus());
+                    }
+                }
+            }
         }
     }
 
-    public boolean containsKatona(){
-        for(int i=0;i<3;i++){
-            if(teammates[i] instanceof Katona){
+
+    public void consumeItem(int ind) {
+        if (inventory[ind] != null) {
+            if (inventory[ind].getSlots()[1] == null) {
+                inventory[ind] = null;
+                //ha van szamar, akkor a 8 helyett (+2 slot) 10 lehet
+                int max = 8;
+                if (this.containsSzamar()) {
+                    max = 10;
+                }
+                if (countSlots() > max) {
+                    this.setMozgas(this.getMozgas() - 20);
+                }
+            } else if (inventory[ind].getSlots()[6] != null) {
+                inventory[ind].getSlots()[6] = null;
+            } else{
+                for (int j = 0; j < 6; j++) {
+                    if (inventory[ind].getSlots()[j] != null && inventory[ind].getSlots()[j + 1] == null) {
+                        inventory[ind].getSlots()[j] = null;
+                    }
+                }
+            }
+        }
+    }
+
+
+    public boolean containsKatona() {
+        for (int i = 0; i < 3; i++) {
+            if (teammates[i] instanceof Katona) {
                 return true;
             }
         }
         return false;
     }
-    public boolean containsKereskedo(){
-        for(int i=0;i<3;i++){
-            if(teammates[i] instanceof Kereskedo){
+
+    public boolean containsKereskedo() {
+        for (int i = 0; i < 3; i++) {
+            if (teammates[i] instanceof Kereskedo) {
                 return true;
             }
         }
         return false;
     }
-    public boolean containsSzamar(){
-        for(int i=0;i<3;i++){
-            if(teammates[i] instanceof Szamar){
+
+    public boolean containsSzamar() {
+        for (int i = 0; i < 3; i++) {
+            if (teammates[i] instanceof Szamar) {
                 return true;
             }
         }
         return false;
     }
-    public boolean containsFelderito(){
-        for(int i=0;i<3;i++){
-            if(teammates[i] instanceof Felderito){
+
+    public boolean containsFelderito() {
+        for (int i = 0; i < 3; i++) {
+            if (teammates[i] instanceof Felderito) {
                 return true;
             }
         }
         return false;
     }
-    public boolean containsSaman(){
-        for(int i=0;i<3;i++){
-            if(teammates[i] instanceof Saman){
+
+    public boolean containsSaman() {
+        for (int i = 0; i < 3; i++) {
+            if (teammates[i] instanceof Saman) {
                 return true;
             }
         }
@@ -320,12 +342,11 @@ public class Felfedezo {
     }
 
     //rendezi a rivalisokak hirnev mennyisege szerint
-    public void sortRivals(){
-        for (int i = 0; i <3; i++)
-        {
+    public void sortRivals() {
+        for (int i = 0; i < 3; i++) {
             int index = i;
-            for (int j = i + 1; j < 4; j++){
-                if (rivals[j].getHirnev() > rivals[index].getHirnev()){
+            for (int j = i + 1; j < 4; j++) {
+                if (rivals[j].getHirnev() > rivals[index].getHirnev()) {
                     index = j;//searching for lowest index
                 }
             }
@@ -336,22 +357,22 @@ public class Felfedezo {
     }
 
     //random megnoveli a rivalisok hirnevet
-    public void incrementRivals(){
-        for(int i=0;i<4;i++){
-            int r = randomNumber(0,100);
-            if(!rivals[i].getNev().equals("Te")){
-                rivals[i].setHirnev(rivals[i].getHirnev()+1000+r);
-            }else{
+    public void incrementRivals() {
+        for (int i = 0; i < 4; i++) {
+            int r = randomNumber(0, 100);
+            if (!rivals[i].getNev().equals("Te")) {
+                rivals[i].setHirnev(rivals[i].getHirnev() + 1000 + r);
+            } else {
                 rivals[i].setHirnev(this.hirnev);
             }
         }
         sortRivals();
     }
 
-    public String printRivals(){
+    public String printRivals() {
         String s = "";
-        for(int i=0;i<4;i++){
-            s = s + (i+1) + ". " + rivals[i].getNev() + ":" + rivals[i].getHirnev() + "\n";
+        for (int i = 0; i < 4; i++) {
+            s = s + (i + 1) + ". " + rivals[i].getNev() + ":" + rivals[i].getHirnev() + "\n";
         }
         return s;
     }

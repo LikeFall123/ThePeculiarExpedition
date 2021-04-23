@@ -1,7 +1,6 @@
 package map;
 
 import objects.Food;
-import objects.Item;
 import objects.foods.Kabitoszer;
 import objects.foods.Whiskey;
 import objects.items.Bozotvago;
@@ -32,28 +31,26 @@ public class Show extends JFrame implements ActionListener {
     private JLabel energiaLabel;
     private JLabel aranyLabel;
     private JLabel hirnevLabel;
-    private JLabel labelInventory;
-    private JComboBox boxInventory;
-    private JLabel labelTeam;
-    private JComboBox boxTeam;
+    private JComboBox<Slot> boxInventory;
+    private JComboBox<Character> boxTeam;
     private JButton buttonUse;
     private JLabel hajoInventory;
-    private JComboBox boxHajoInv;
+    private JComboBox<Slot> boxHajoInv;
     private JButton buttonEltarol;
     private JButton buttonBerak;
     private JLabel faluInventory;
     private JButton buttonFaluElad;
-    private JComboBox boxFaluInv;
+    private JComboBox<Slot> boxFaluInv;
     private JLabel faluCharSaleLabel;
-    private JComboBox boxChar;
+    private JComboBox<Character> boxChar;
     private JButton buttonChar;
     private JButton buttonNewMission;
     private JButton buttonKincsHirnev;
     private JLabel labelInitBuy;
-    private JComboBox boxInitBuy;
+    private JComboBox<Slot> boxInitBuy;
     private JButton buttonInitBuy;
     private JLabel labelInitChar;
-    private JComboBox boxInitChar;
+    private JComboBox<Character> boxInitChar;
     private JButton buttonInitChar;
     private JButton buttonStart;
     private JButton buttonStop;
@@ -112,7 +109,7 @@ public class Show extends JFrame implements ActionListener {
                 JButton btn = new JButton();
                 btn.setPreferredSize(new Dimension(40, 40));
                 add(btn);
-                btn.addActionListener(this::actionPerformed);
+                btn.addActionListener(this);
                 buttons[i][j] = btn; // ------------------------------------> a gombok egy matrixban vannak tarolva
                 initPaint(i,j);
             }
@@ -125,18 +122,18 @@ public class Show extends JFrame implements ActionListener {
         hirnevLabel = new JLabel("Hirnev:" + jozsi.getHirnev());
         add(hirnevLabel);
 
-        labelInventory = new JLabel("Inventory:");
+        JLabel labelInventory = new JLabel("Inventory:");
         add(labelInventory);
-        boxInventory = new JComboBox(jozsi.getInventory());
+        boxInventory = new JComboBox<>(jozsi.getInventory());
         boxInventory.setEditable(false);
         add(boxInventory);
         buttonUse = new JButton("Use");
         add(buttonUse);
-        buttonUse.addActionListener(this::actionPerformed);
+        buttonUse.addActionListener(this);
 
-        labelTeam = new JLabel("Team");
+        JLabel labelTeam = new JLabel("Team");
         add(labelTeam);
-        boxTeam = new JComboBox(jozsi.getTeammates());
+        boxTeam = new JComboBox<>(jozsi.getTeammates());
         add(boxTeam);
 
 
@@ -155,41 +152,91 @@ public class Show extends JFrame implements ActionListener {
 
         labelInitBuy = new JLabel("Eszkozok:");
         add(labelInitBuy);
-        boxInitBuy = new JComboBox(isl.getForSale());
+        boxInitBuy = new JComboBox<>(isl.getForSale());
         add(boxInitBuy);
         buttonInitBuy = new JButton("Vesz");
-        buttonInitBuy.addActionListener(this::actionPerformed);
+        buttonInitBuy.addActionListener(this);
         add(buttonInitBuy);
 
         labelInitChar = new JLabel("Uj csapattars");
         add(labelInitChar);
-        boxInitChar = new JComboBox(isl.getCharSale());
+        boxInitChar = new JComboBox<>(isl.getCharSale());
         add(boxInitChar);
         buttonInitChar = new JButton("Vesz");
-        buttonInitChar.addActionListener(this::actionPerformed);
+        buttonInitChar.addActionListener(this);
         add(buttonInitChar);
 
         buttonStart = new JButton("Start");
-        buttonStart.addActionListener(this::actionPerformed);
+        buttonStart.addActionListener(this);
         add(buttonStart);
     }
 
     //inicalizalja a gombok ikonjat
     private void initPaint(int i,int j){
         Ures ures = new Ures();
-        switch (lvl[i].charAt(j)){
-            case '0' : {Tenger t = new Tenger(); map[i][j]=t; buttons[i][j].setIcon(new ImageIcon(ures.getImg()));break;}
-            case '1' : {Fold f = new Fold(); map[i][j]=f; buttons[i][j].setIcon(new ImageIcon(ures.getImg()));break;}
-            case '2' : {Hegy h = new Hegy(); map[i][j]=h; buttons[i][j].setIcon(new ImageIcon(ures.getImg()));break;}
-            case '3' : {To t = new To(); map[i][j]=t; buttons[i][j].setIcon(new ImageIcon(ures.getImg()));break;}
-            case '4' : {Jungle jungle = new Jungle(); map[i][j]=jungle; buttons[i][j].setIcon(new ImageIcon(ures.getImg()));break;}
-            case 'h' : {this.h= new Hajo(); map[i][j]=this.h; buttons[i][j].setIcon(new ImageIcon(this.h.getImg()));break;}
-            case 'b' : {Barlang b = new Barlang(); map[i][j]=b; buttons[i][j].setIcon(new ImageIcon(ures.getImg()));break;}
-            case 'o' : {Oltar o = new Oltar(); map[i][j]=o; buttons[i][j].setIcon(new ImageIcon(ures.getImg()));break;}
-            case '*' : {this.p = new Piramis(); map[i][j]=this.p; buttons[i][j].setIcon(new ImageIcon(ures.getImg()));break;}
-            case 'n' : {Nedves n = new Nedves(); map[i][j]=n; buttons[i][j].setIcon(new ImageIcon(ures.getImg()));break;}
-            case 'f' : {Falu f = new Falu(); map[i][j]=f; buttons[i][j].setIcon(new ImageIcon(ures.getImg()));break;}
-            case 'i' : {this.x=i;this.y=j;Fold f = new Fold(); map[i][j]=f; buttons[i][j].setIcon(new ImageIcon(ures.getImg()));break;}
+        switch (lvl[i].charAt(j)) {
+            case '0' -> {
+                Tenger t = new Tenger();
+                map[i][j] = t;
+                buttons[i][j].setIcon(new ImageIcon(ures.getImg()));
+            }
+            case '1' -> {
+                Fold f = new Fold();
+                map[i][j] = f;
+                buttons[i][j].setIcon(new ImageIcon(ures.getImg()));
+            }
+            case '2' -> {
+                Hegy h = new Hegy();
+                map[i][j] = h;
+                buttons[i][j].setIcon(new ImageIcon(ures.getImg()));
+            }
+            case '3' -> {
+                To t = new To();
+                map[i][j] = t;
+                buttons[i][j].setIcon(new ImageIcon(ures.getImg()));
+            }
+            case '4' -> {
+                Jungle jungle = new Jungle();
+                map[i][j] = jungle;
+                buttons[i][j].setIcon(new ImageIcon(ures.getImg()));
+            }
+            case 'h' -> {
+                h = new Hajo();
+                map[i][j] = h;
+                buttons[i][j].setIcon(new ImageIcon(h.getImg()));
+            }
+            case 'b' -> {
+                Barlang b = new Barlang();
+                map[i][j] = b;
+                buttons[i][j].setIcon(new ImageIcon(ures.getImg()));
+            }
+            case 'o' -> {
+                Oltar o = new Oltar();
+                map[i][j] = o;
+                buttons[i][j].setIcon(new ImageIcon(ures.getImg()));
+            }
+            case '*' -> {
+                p = new Piramis();
+                map[i][j] = p;
+                buttons[i][j].setIcon(new ImageIcon(ures.getImg()));
+            }
+            case 'n' -> {
+                Nedves n = new Nedves();
+                map[i][j] = n;
+                buttons[i][j].setIcon(new ImageIcon(ures.getImg()));
+            }
+            case 'f' -> {
+                Falu f = new Falu();
+                map[i][j] = f;
+                buttons[i][j].setIcon(new ImageIcon(ures.getImg()));
+            }
+            case 'i' -> {
+                x = i;
+                y = j;
+                Fold f = new Fold();
+                map[i][j] = f;
+                buttons[i][j].setIcon(new ImageIcon(ures.getImg()));
+            }
         }
     }
 
@@ -218,37 +265,34 @@ public class Show extends JFrame implements ActionListener {
     }
 
     private boolean isNext(int i, int j){
-        if(i>=x-1 && i<=x+1 && j>=y-1 && j<=y+1 && (i!=x || j!=y) && canStart==true){
-            return true;
-        }
-        return false;
+        return i >= x - 1 && i <= x + 1 && j >= y - 1 && j <= y + 1 && (i != x || j != y) && canStart;
     }
 
     private void hajoLep(){
         hajoInventory = new JLabel("Hajo raktar:");
         add(hajoInventory);
-        boxHajoInv = new JComboBox(h.getRaktar());
+        boxHajoInv = new JComboBox<>(h.getRaktar());
         add(boxHajoInv);
         buttonEltarol = new JButton("Elraktaroz");
-        buttonEltarol.addActionListener(this::actionPerformed);
+        buttonEltarol.addActionListener(this);
         add(buttonEltarol);
         buttonBerak = new JButton("Berak");
-        buttonBerak.addActionListener(this::actionPerformed);
+        buttonBerak.addActionListener(this);
         add(buttonBerak);
-        if(this.p.isVisited()==false){
+        if(!p.isVisited()){
             buttonStop = new JButton("Hazamegy");
-            buttonStop.addActionListener(this::actionPerformed);
+            buttonStop.addActionListener(this);
             add(buttonStop);
         }
-        if(this.p.isVisited()==true){
+        if(p.isVisited()){
             buttonFaluElad = new JButton("Elad");
-            buttonFaluElad.addActionListener(this::actionPerformed);
+            buttonFaluElad.addActionListener(this);
             add(buttonFaluElad);
             buttonKincsHirnev = new JButton("Hirnevre valt");
-            buttonKincsHirnev.addActionListener(this::actionPerformed);
+            buttonKincsHirnev.addActionListener(this);
             add(buttonKincsHirnev);
             buttonNewMission = new JButton("New Mission");
-            buttonNewMission.addActionListener(this::actionPerformed);
+            buttonNewMission.addActionListener(this);
             add(buttonNewMission);
         }
     }
@@ -259,17 +303,17 @@ public class Show extends JFrame implements ActionListener {
         boxFaluInv = new JComboBox(map[x][y].getForSale());
         add(boxFaluInv);
         buttonBerak = new JButton("Megvasarol");
-        buttonBerak.addActionListener(this::actionPerformed);
+        buttonBerak.addActionListener(this);
         add(buttonBerak);
         buttonFaluElad = new JButton("Elad");
-        buttonFaluElad.addActionListener(this::actionPerformed);
+        buttonFaluElad.addActionListener(this);
         add(buttonFaluElad);
         faluCharSaleLabel = new JLabel("Megveheto tarsak:");
         add(faluCharSaleLabel);
         boxChar = new JComboBox(map[x][y].getCharSale());
         add(boxChar);
         buttonChar = new JButton("Felberel");
-        buttonChar.addActionListener(this::actionPerformed);
+        buttonChar.addActionListener(this);
         add(buttonChar);
     }
 
@@ -292,11 +336,11 @@ public class Show extends JFrame implements ActionListener {
                         remove(buttonEltarol);
                         remove(hajoInventory);
                         remove(boxHajoInv);
-                        if(this.p.isVisited()==false){
+                        if(!p.isVisited()){
                             remove(buttonStop);
                             buttonStop.setVisible(false);
                         }
-                        if(this.p.isVisited()){
+                        if(p.isVisited()){
                             remove(buttonNewMission);
                             buttonNewMission.setVisible(false);
                             remove(buttonFaluElad);
@@ -337,27 +381,29 @@ public class Show extends JFrame implements ActionListener {
                     //ha hajora lep
                     if(map[x][y] instanceof Hajo){
                         hajoLep();
+                        jozsi.setEnergia(100);
+                        energiaLabel.setText("Energis:"+jozsi.getEnergia());
                     }
                     //ha falura lep
                     if(map[x][y] instanceof Falu){
                         faluLep();
                     }
                     //ha piramisra lep
-                    if(map[x][y] instanceof Piramis && !this.p.isVisited()){
-                        this.p.setVisited();
+                    if(map[x][y] instanceof Piramis && !p.isVisited()){
+                        p.setVisited();
                         jozsi.setHirnev(jozsi.getHirnev()+1000);
                         hirnevLabel.setText("Hirnev:"+jozsi.getHirnev());
                         jozsi.addSlot(new Kincs(100));
                         JOptionPane.showMessageDialog(this,"Megtalaltad az arany piramist, +1000 hirnev");
-                        boxInventory.setModel(new DefaultComboBoxModel(jozsi.getInventory()));
+                        boxInventory.setModel(new DefaultComboBoxModel<>(jozsi.getInventory()));
                     }
                     //ha oltarra vagy barlangra lep
-                    if((map[x][y] instanceof Oltar || map[x][y] instanceof Barlang) && map[x][y].isMegtalalKincs()==false){
+                    if((map[x][y] instanceof Oltar || map[x][y] instanceof Barlang) && !map[x][y].isMegtalalKincs()){
                         map[x][y].setMegtalalKincs();
                         int r = randomNumber(10,50);
                         jozsi.addSlot(new Kincs(r));
                         JOptionPane.showMessageDialog(this,"Talaltal egy kincset");
-                        boxInventory.setModel(new DefaultComboBoxModel(jozsi.getInventory()));
+                        boxInventory.setModel(new DefaultComboBoxModel<>(jozsi.getInventory()));
                     }
 
                     //ha nincs energia, akkor 8%esellyel elhagyja minden csapattag a csapatot, majd te is
@@ -368,11 +414,11 @@ public class Show extends JFrame implements ActionListener {
                             if(jozsi.countTeam()>1){
                                 jozsi.removeCharacter(c);
                                 jozsi.printTeam();
-                                boxTeam.setModel(new DefaultComboBoxModel(jozsi.getTeammates()));
+                                boxTeam.setModel(new DefaultComboBoxModel<>(jozsi.getTeammates()));
                             }else if(jozsi.countTeam()==1) {
                                 jozsi.removeCharacter();
                                 jozsi.printTeam();
-                                boxTeam.setModel(new DefaultComboBoxModel(jozsi.getTeammates()));
+                                boxTeam.setModel(new DefaultComboBoxModel<>(jozsi.getTeammates()));
                             }else{
                                 JOptionPane.showMessageDialog(this,"Elfogyott az energiad: GAME OVER");
                                 dispose();
@@ -380,7 +426,25 @@ public class Show extends JFrame implements ActionListener {
                         }
                     }
 
-                    //ha jozsi kabszi fuggo, akkor a kovetkezo 30 lepesen belul nem kap kivato kajat, akkor kilepnek
+                    //ha valamelyik csapattars fuggo...
+                    for(int tm=0;tm<3;tm++){
+                        if(jozsi.getTeammates()[tm]!=null){
+                            if(jozsi.getTeammates()[tm].isFuggo()){
+                                jozsi.getTeammates()[tm].setFuggoLepes(jozsi.getTeammates()[tm].getFuggoLepes()+1);
+                            }else{
+                                jozsi.getTeammates()[tm].setFuggoLepes(0);
+                            }
+                            if(jozsi.getTeammates()[tm].getFuggoLepes()>30){
+                                int r = randomNumber(0,100);
+                                if(r<10){
+                                    JOptionPane.showMessageDialog(this,"A " + jozsi.getTeammates()[tm].getFajta() + " fuggo, ezert elhagyja a csapatot!");
+                                    jozsi.removeCharacter(tm);
+                                    boxTeam.setModel(new DefaultComboBoxModel<>(jozsi.getTeammates()));
+                                }
+                            }
+                        }
+                    }
+                    //ha jozsi kabszi fuggo, es a kovetkezo 30 lepesen belul nem kap kivato kajat, akkor kilepnek
                     if(jozsi.isFuggo()){
                         fuggolepes++;
                     }else{
@@ -402,9 +466,10 @@ public class Show extends JFrame implements ActionListener {
         //use gomb
         if(e.getSource()== buttonUse){
             Slot i = (Slot) boxInventory.getSelectedObjects()[0];
-            if(i.getSlots()[0] instanceof Food && i.getSlots()!=null){
-                jozsi.consumeFood((Food) i.getSlots()[0]); //konzumalja mint FOOD
-                if(jozsi.containsKereskedo() && (i.getSlots()[0] instanceof Whiskey)){ //ha van katona, es whiskeyt ittal akkor +20% energia
+            int c = boxTeam.getSelectedIndex();
+            if(i.getSlots()[0] instanceof Food ){
+                jozsi.consumeFood((Food) i.getSlots()[0],boxInventory.getSelectedIndex(),c); //konzumalja mint FOOD
+                if(jozsi.containsKatona() && (i.getSlots()[0] instanceof Whiskey)){ //ha van katona, es whiskeyt ittal akkor +20% energia
                     jozsi.setEnergia(jozsi.getEnergia()*1.2);
                 }
                 if(jozsi.containsSaman() && (i.getSlots()[0] instanceof Kabitoszer)){ //ha van saman, és kábsziztál akkor +20% enegeria
@@ -412,12 +477,13 @@ public class Show extends JFrame implements ActionListener {
                 }
             }
             if(i.getSlots()[0] instanceof Bozotvago && map[x][y] instanceof Jungle && i.getSlots()!=null){ //ez tipikusan a bozotvagora valo
-                jozsi.consumeItem((Item) i.getSlots()[0]); //elhasználja mint ITEM
+                jozsi.consumeItem(boxInventory.getSelectedIndex()); //elhasználja mint ITEM
                 map[x][y]=new Fold();
                 paintFicko();
             }
             energiaLabel.setText("Energia:"+jozsi.getEnergia()); //felirat frissitese
-            boxInventory.setModel(new DefaultComboBoxModel(jozsi.getInventory())); //legordulo box frissitese
+            boxInventory.setModel(new DefaultComboBoxModel<>(jozsi.getInventory())); //legordulo box frissitese
+            boxTeam.setModel(new DefaultComboBoxModel<>(jozsi.getTeammates()));
         }
 
         //eltarol gomb
@@ -426,9 +492,9 @@ public class Show extends JFrame implements ActionListener {
             if(s.getSlots()!=null){
                 h.elraktaroz(s.getSlots()[0]);
                 System.out.println(s.getSlots()[0] + "+" + h.getRaktar()[0]);
-                jozsi.consumeItem(s.getSlots()[0]);
-                boxHajoInv.setModel(new DefaultComboBoxModel(h.getRaktar()));
-                boxInventory.setModel(new DefaultComboBoxModel(jozsi.getInventory()));
+                jozsi.consumeItem(boxInventory.getSelectedIndex());
+                boxHajoInv.setModel(new DefaultComboBoxModel<>(h.getRaktar()));
+                boxInventory.setModel(new DefaultComboBoxModel<>(jozsi.getInventory()));
             }
 
         }
@@ -437,11 +503,10 @@ public class Show extends JFrame implements ActionListener {
         if(e.getSource()==buttonBerak){
             if(map[x][y] instanceof Hajo){
                 Slot s = (Slot) boxHajoInv.getSelectedObjects()[0];
-                h.consumeItem(s.getSlots()[0]);
-                System.out.println(s.getSlots()[0] + "+" + h.getRaktar()[0]);
+                h.consumeItem(boxHajoInv.getSelectedIndex());
                 jozsi.addSlot(s.getSlots()[0]);
-                boxHajoInv.setModel(new DefaultComboBoxModel(h.getRaktar()));
-                boxInventory.setModel(new DefaultComboBoxModel(jozsi.getInventory()));
+                boxHajoInv.setModel(new DefaultComboBoxModel<>(h.getRaktar()));
+                boxInventory.setModel(new DefaultComboBoxModel<>(jozsi.getInventory()));
             }
             if(map[x][y] instanceof Falu){
                 double akcio=1;
@@ -450,13 +515,13 @@ public class Show extends JFrame implements ActionListener {
                 }
                 Slot s = (Slot) boxFaluInv.getSelectedObjects()[0];
                 if(jozsi.getArany()>=(int)(akcio*s.getSlots()[0].getErtek()) && s.getSlots()!=null){
-                    map[x][y].consumeItem(s.getSlots()[0]);
+                    map[x][y].consumeItem(boxFaluInv.getSelectedIndex());
                     jozsi.addSlot(s.getSlots()[0]);
                     jozsi.setArany(jozsi.getArany()-(int)(akcio*s.getSlots()[0].getErtek()));
                 }
                 aranyLabel.setText("Arany:"+jozsi.getArany());
                 boxFaluInv.setModel(new DefaultComboBoxModel(map[x][y].getForSale()));
-                boxInventory.setModel(new DefaultComboBoxModel(jozsi.getInventory()));
+                boxInventory.setModel(new DefaultComboBoxModel<>(jozsi.getInventory()));
             }
         }
 
@@ -474,7 +539,7 @@ public class Show extends JFrame implements ActionListener {
             }
             aranyLabel.setText("Arany:"+jozsi.getArany());
             boxChar.setModel(new DefaultComboBoxModel(map[x][y].getCharSale()));
-            boxTeam.setModel(new DefaultComboBoxModel(jozsi.getTeammates()));
+            boxTeam.setModel(new DefaultComboBoxModel<>(jozsi.getTeammates()));
         }
 
         //faluban elado gomb
@@ -488,7 +553,7 @@ public class Show extends JFrame implements ActionListener {
                 int ind = boxInventory.getSelectedIndex();
                 jozsi.consumeItem(ind);
                 jozsi.setArany(jozsi.getArany()+(int)(akcio*s.getSlots()[0].getErtek()));
-                boxInventory.setModel(new DefaultComboBoxModel(jozsi.getInventory()));
+                boxInventory.setModel(new DefaultComboBoxModel<>(jozsi.getInventory()));
                 aranyLabel.setText("Arany:"+jozsi.getArany());
             }
         }
@@ -519,7 +584,7 @@ public class Show extends JFrame implements ActionListener {
             if(s.getSlots()[0] instanceof Kincs && s.getSlots()!=null){
                 jozsi.consumeItem(ind);
                 jozsi.setHirnev(jozsi.getHirnev()+s.getSlots()[0].getErtek());
-                boxInventory.setModel(new DefaultComboBoxModel(jozsi.getInventory()));
+                boxInventory.setModel(new DefaultComboBoxModel<>(jozsi.getInventory()));
                 hirnevLabel.setText("Hirnev:"+jozsi.getHirnev());
             }
         }
@@ -533,8 +598,8 @@ public class Show extends JFrame implements ActionListener {
                 jozsi.setArany(jozsi.getArany()-s.getSlots()[0].getErtek());
             }
             aranyLabel.setText("Arany:"+jozsi.getArany());
-            boxInitBuy.setModel(new DefaultComboBoxModel(isl.getForSale()));
-            boxInventory.setModel(new DefaultComboBoxModel(jozsi.getInventory()));
+            boxInitBuy.setModel(new DefaultComboBoxModel<>(isl.getForSale()));
+            boxInventory.setModel(new DefaultComboBoxModel<>(jozsi.getInventory()));
         }
 
         //csapattarsat vesz kuldetes elott
@@ -546,8 +611,8 @@ public class Show extends JFrame implements ActionListener {
                 jozsi.setArany(jozsi.getArany()-150);
             }
             aranyLabel.setText("Arany:"+jozsi.getArany());
-            boxInitChar.setModel(new DefaultComboBoxModel(isl.getCharSale()));
-            boxTeam.setModel(new DefaultComboBoxModel(jozsi.getTeammates()));
+            boxInitChar.setModel(new DefaultComboBoxModel<>(isl.getCharSale()));
+            boxTeam.setModel(new DefaultComboBoxModel<>(jozsi.getTeammates()));
         }
 
         //start gomb
