@@ -28,7 +28,6 @@ public class Felfedezo {
     protected Slot[] inventory = new Slot[20];
     protected Character[] teammates = new Character[3];
     protected Rival[] rivals = new Rival[4];
-    private String[] nevek = {"Szándokán", "Winnetou", "Dzseszperó", "Te"};
 
     public Felfedezo() {
         this.arany = 250;
@@ -37,8 +36,8 @@ public class Felfedezo {
         this.hirnev = 0;
         this.alkoholista = false;
         this.fuggo = false;
-        int r = randomNumber(0, 100);
         for (int i = 0; i < 4; i++) {
+            String[] nevek = {"Szándokán", "Winnetou", "Dzseszperó", "Te"};
             Rival rival = new Rival(nevek[i], 0);
             rivals[i] = rival;
         }
@@ -91,10 +90,6 @@ public class Felfedezo {
         this.hirnev = hirnev;
     }
 
-    public boolean isAlkoholista() {
-        return alkoholista;
-    }
-
     public void setAlkoholista(boolean alkoholista) {
         this.alkoholista = alkoholista;
     }
@@ -110,7 +105,7 @@ public class Felfedezo {
 
     /**
      * uj karaktert vesz fel
-     * @param character
+     * @param character karakter fajta
      */
     public void addCharacter(Character character) {
         for (int i = 0; i < 3; i++) {
@@ -123,20 +118,8 @@ public class Felfedezo {
     }
 
     /**
-     * torles charakter alapjan
-     * @param character
-     */
-    public void removeCharacter(Character character) {
-        for (int i = 0; i < 3; i++) {
-            if (teammates[i] == character) {
-                teammates[i] = null;
-            }
-        }
-    }
-
-    /**
      * karkater torles index alapjan
-     * @param index
+     * @param index index
      */
     public void removeCharacter(int index) {
         teammates[index] = null;
@@ -158,7 +141,7 @@ public class Felfedezo {
 
     /**
      * megszamolja hanyan tars van
-     * @return
+     * @return hany van
      */
     public int countTeam() {
         int k = 0;
@@ -172,7 +155,7 @@ public class Felfedezo {
 
     /**
      * megszamolja hany slot van
-     * @return
+     * @return hany slot
      */
     public int countSlots() {
         int k = 0;
@@ -186,7 +169,7 @@ public class Felfedezo {
 
     /**
      * uj slotot ad hozza
-     * @param item
+     * @param item item tipus
      */
     public void addSlot(Item item) {
         for (int i = 0; i < 20; i++) {
@@ -194,7 +177,7 @@ public class Felfedezo {
                 inventory[i] = new Slot(item);
                 break;
             } else {
-                if (inventory[i].addItem(item) == false) {
+                if (!inventory[i].addItem(item)) {
                     continue;
                 } else {
                     break;
@@ -222,27 +205,11 @@ public class Felfedezo {
         }
     }
 
-    /**
-     * kiirja az inventoryt
-     */
-    public void printInventory() {
-        for (int i = 0; i < 20; i++) {
-            int num = 0;
-            if (inventory[i] != null) {
-                for (int j = 0; j < 7; j++) {
-                    if (inventory[i].getSlots()[j] != null) {
-                        num++;
-                    }
-                }
-                System.out.println(inventory[i].getSlots()[0].getNev() + " " + num);
-            }
-        }
-    }
 
     /**
      * kezeli ha fuggo a jatekos vagy valamelyik tarsa
-     * @param food
-     * @param charInd
+     * @param food kaja
+     * @param charInd melyik indexrol
      */
     public void fuggoseg(Food food, int charInd) {
         if (food instanceof Whiskey) {
@@ -287,9 +254,9 @@ public class Felfedezo {
 
     /**
      * elfogyasztja a kivalasztott etelt
-     * @param food
-     * @param foodIndex
-     * @param charIndex
+     * @param food kaja
+     * @param foodIndex indexrol
+     * @param charIndex melyik karakter egye meg
      */
     public void consumeFood(Food food, int foodIndex, int charIndex) {
         if (inventory[foodIndex] != null) {
@@ -321,7 +288,7 @@ public class Felfedezo {
 
     /**
      * elhasznalja a kivalasztott eszkozt
-     * @param ind
+     * @param ind index
      */
     public void consumeItem(int ind) {
         if (inventory[ind] != null) {
@@ -350,7 +317,7 @@ public class Felfedezo {
 
     /**
      * csapatban van e katona
-     * @return
+     * @return van e
      */
     public boolean containsKatona() {
         for (int i = 0; i < 3; i++) {
@@ -363,7 +330,7 @@ public class Felfedezo {
 
     /**
      * csapatban van e kereskedo
-     * @return
+     * @return van e
      */
     public boolean containsKereskedo() {
         for (int i = 0; i < 3; i++) {
@@ -376,7 +343,7 @@ public class Felfedezo {
 
     /**
      * csapatban van e szamar
-     * @return
+     * @return van e
      */
     public boolean containsSzamar() {
         for (int i = 0; i < 3; i++) {
@@ -389,7 +356,7 @@ public class Felfedezo {
 
     /**
      * csapatban van e felderito
-     * @return
+     * @return van e
      */
     public boolean containsFelderito() {
         for (int i = 0; i < 3; i++) {
@@ -402,7 +369,7 @@ public class Felfedezo {
 
     /**
      * csapatban van e saman
-     * @return
+     * @return van e
      */
     public boolean containsSaman() {
         for (int i = 0; i < 3; i++) {
@@ -447,19 +414,19 @@ public class Felfedezo {
 
     /**
      * kiirja a rivalisok adatait
-     * @return
+     * @return rivalisok string
      */
     public String printRivals() {
-        String s = "";
+        StringBuilder s = new StringBuilder();
         for (int i = 0; i < 4; i++) {
-            s = s + (i + 1) + ". " + rivals[i].getNev() + ":" + rivals[i].getHirnev() + "\n";
+            s.append(i + 1).append(". ").append(rivals[i].getNev()).append(":").append(rivals[i].getHirnev()).append("\n");
         }
-        return s;
+        return s.toString();
     }
 
     /**
      * jatek vegen visszaadja a legjobb felfedezot
-     * @return
+     * @return legjobb felfedezo
      */
     public String legjobbRival() {
         sortRivals();

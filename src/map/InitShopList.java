@@ -82,7 +82,7 @@ public class InitShopList{
 
     /**
      * Hozzaadja ezt az elemet a lehetseges vasarolhato cuccok koze
-     * @param item
+     * @param item cucc
      */
     public void elraktaroz(Item item){
         for(int i=0;i<20;i++){
@@ -90,7 +90,7 @@ public class InitShopList{
                 forSale[i] = new Slot(item);
                 break;
             }else{
-                if(forSale[i].addItem(item)==false){
+                if(!forSale[i].addItem(item)){
                     continue;
                 }else {
                     break;
@@ -101,7 +101,7 @@ public class InitShopList{
 
     /**
      * A jatekos megveszi ezt az elemet
-     * @param item
+     * @param item cucc
      */
     public void consumeItem(Item item){
         for (int i = 0; i < 20; i++) {
@@ -123,7 +123,7 @@ public class InitShopList{
 
     /**
      * Karaktert hozzaad
-     * @param character
+     * @param character karakter
      */
     public void addCharacter(Character character){
         for(int i=0;i<7;i++){
@@ -136,7 +136,7 @@ public class InitShopList{
 
     /**
      * Karakter vasarlas
-     * @param character
+     * @param character karakter
      */
     public void buyCharacter(Character character){
         for(int i=0; i<7; i++){

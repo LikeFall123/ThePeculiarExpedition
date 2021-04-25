@@ -17,9 +17,6 @@ public class Character {
         this.fuggoLepes=0;
     }
 
-    public boolean isAlkoholista() {
-        return alkoholista;
-    }
 
     public void setAlkoholista(boolean alkoholista) {
         this.alkoholista = alkoholista;

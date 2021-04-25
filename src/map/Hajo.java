@@ -22,7 +22,7 @@ public class Hajo extends Map {
 
     /**
      * Elraktarozza a jatekos ezt az elemet
-     * @param item
+     * @param item elem
      */
     public void elraktaroz(Item item) {
         for (int i = 0; i < 20; i++) {
@@ -41,7 +41,7 @@ public class Hajo extends Map {
 
     /**
      * Kiveszi a jatekos ezt az elemet
-     * @param ind
+     * @param ind index
      */
     public void consumeItem(int ind) {
         if (raktar[ind] != null) {

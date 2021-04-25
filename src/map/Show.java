@@ -7,7 +7,6 @@ import objects.items.Bozotvago;
 import objects.items.Kincs;
 import team.Felfedezo;
 import team.characters.Character;
-import team.characters.Szamar;
 import team.slots.Slot;
 
 import javax.swing.*;
@@ -147,12 +146,13 @@ public class Show extends JFrame implements ActionListener {
 
         paintFicko();
         initBuy();
-//        JOptionPane.showMessageDialog(this,"Üdvözöllek a The Peculiar Expedition játékban." +
-//                "\nAz első küldetés előtt tusz választani egy csapattársat meg alapvető eszközöket, ételeket venni." +
-//                "\nFeladatod, hogy megtaláld az ararny piramist!" +
-//                "\nJáték közben a küldetésed, hogy különböző kincseket gyűjts, és ezeket hírnevre vagy pénzre váltsd!" +
-//                "\nStart gombra kattintva elindíthatod a játékot!" +
-//                "\nJó szórakozást!");
+        JOptionPane.showMessageDialog(this, """
+                Üdvözöllek a The Peculiar Expedition játékban.
+                Az első küldetés előtt tusz választani egy csapattársat meg alapvető eszközöket, ételeket venni.
+                Feladatod, hogy megtaláld az ararny piramist!
+                Játék közben a küldetésed, hogy különböző kincseket gyűjts, és ezeket hírnevre vagy pénzre váltsd!
+                Start gombra kattintva elindíthatod a játékot!
+                Jó szórakozást!""");
     }
 
     /**
@@ -183,8 +183,8 @@ public class Show extends JFrame implements ActionListener {
 
     /**
      * inicalizalja a gombok ikonjat
-     * @param i
-     * @param j
+     * @param i sorok
+     * @param j oszlopok
      */
     private void initPaint(int i,int j){
         Ures ures = new Ures();
@@ -256,8 +256,8 @@ public class Show extends JFrame implements ActionListener {
 
     /**
      * visszafesti az a gombot ahonnan ellepett jozsi
-     * @param i
-     * @param j
+     * @param i vizszintes
+     * @param j fuggoleges
      */
     private void paint(int i,int j){
         buttons[i][j].setIcon(new ImageIcon(map[i][j].getImg()));
@@ -286,9 +286,9 @@ public class Show extends JFrame implements ActionListener {
 
     /**
      * valid e a hely, ahova kattintottunk
-     * @param i
-     * @param j
-     * @return
+     * @param i vizszintes
+     * @param j fuggoleges
+     * @return helyes e
      */
     private boolean isNext(int i, int j){
         return i >= x - 1 && i <= x + 1 && j >= y - 1 && j <= y + 1 && (i != x || j != y) && canStart;
@@ -352,7 +352,7 @@ public class Show extends JFrame implements ActionListener {
 
     /**
      * Mi tortenik akkor, ha kulonbozo gombra kattintunk. Kommentben vannak a tovabbi leirasok
-     * @param e
+     * @param e akcio tortenes
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -606,7 +606,6 @@ public class Show extends JFrame implements ActionListener {
                 initComponents();
                 JOptionPane.showMessageDialog(this,jozsi.printRivals());
             }else{
-                String legjobb = jozsi.legjobbRival();
                 JOptionPane.showMessageDialog(this,"Sikeresen befejezted a jatekot!\n"+"Legjobb felfedezo: "+jozsi.legjobbRival());
                 dispose();
             }
