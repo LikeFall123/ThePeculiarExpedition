@@ -1,3 +1,4 @@
+import map.GenerateRandomMap;
 import map.Show;
 
 public class Main {

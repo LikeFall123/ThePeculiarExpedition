@@ -1,4 +1,7 @@
 package map;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import static map.RandomNumber.randomNumber;
 
 public class GenerateRandomMap {
@@ -8,7 +11,7 @@ public class GenerateRandomMap {
             Show.lines=16;
             Show.columns=16;
             for (int i = 0; i < 3; i++) {
-                Show.lvl[i] = new String("00000000000000000");
+                Show.lvl[i] = new String("0000000000000000");
             }
             int h = randomNumber(0,Show.lines);
             String s = "";
@@ -63,6 +66,18 @@ public class GenerateRandomMap {
             for(int i=0;i<Show.lines;i++){
                 System.out.println(Show.lvl[i]);
             }
+
+//            try {
+//                FileWriter myWriter = new FileWriter("filename.txt");
+//                for(int i=0;i<Show.lines;i++){
+//                    myWriter.write(Show.lvl[i]+"\n");
+//                }
+//                myWriter.close();
+//                System.out.println("Successfully wrote to the file.");
+//            } catch (IOException e) {
+//                System.out.println("An error occurred.");
+//                e.printStackTrace();
+//            }
         }
     }
 }

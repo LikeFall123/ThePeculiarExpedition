@@ -40,9 +40,9 @@ public class Show extends JFrame implements ActionListener {
     private JButton buttonBerak;
     private JLabel faluInventory;
     private JButton buttonFaluElad;
-    private JComboBox<Slot> boxFaluInv;
+    private JComboBox boxFaluInv;
     private JLabel faluCharSaleLabel;
-    private JComboBox<Character> boxChar;
+    private JComboBox boxChar;
     private JButton buttonChar;
     private JButton buttonNewMission;
     private JButton buttonKincsHirnev;
@@ -300,7 +300,7 @@ public class Show extends JFrame implements ActionListener {
     public void faluLep(){
         faluInventory = new JLabel("Falu piac:");
         add(faluInventory);
-        boxFaluInv = new JComboBox(map[x][y].getForSale());
+        boxFaluInv = new JComboBox<>(map[x][y].getForSale());
         add(boxFaluInv);
         buttonBerak = new JButton("Megvasarol");
         buttonBerak.addActionListener(this);
@@ -310,7 +310,7 @@ public class Show extends JFrame implements ActionListener {
         add(buttonFaluElad);
         faluCharSaleLabel = new JLabel("Megveheto tarsak:");
         add(faluCharSaleLabel);
-        boxChar = new JComboBox(map[x][y].getCharSale());
+        boxChar = new JComboBox<>(map[x][y].getCharSale());
         add(boxChar);
         buttonChar = new JButton("Felberel");
         buttonChar.addActionListener(this);
@@ -520,7 +520,7 @@ public class Show extends JFrame implements ActionListener {
                     jozsi.setArany(jozsi.getArany()-(int)(akcio*s.getSlots()[0].getErtek()));
                 }
                 aranyLabel.setText("Arany:"+jozsi.getArany());
-                boxFaluInv.setModel(new DefaultComboBoxModel(map[x][y].getForSale()));
+                boxFaluInv.setModel(new DefaultComboBoxModel<>(map[x][y].getForSale()));
                 boxInventory.setModel(new DefaultComboBoxModel<>(jozsi.getInventory()));
             }
         }
@@ -538,7 +538,7 @@ public class Show extends JFrame implements ActionListener {
                 jozsi.setArany(jozsi.getArany()-(int)(akcio*150));
             }
             aranyLabel.setText("Arany:"+jozsi.getArany());
-            boxChar.setModel(new DefaultComboBoxModel(map[x][y].getCharSale()));
+            boxChar.setModel(new DefaultComboBoxModel<>(map[x][y].getCharSale()));
             boxTeam.setModel(new DefaultComboBoxModel<>(jozsi.getTeammates()));
         }
 
@@ -560,7 +560,7 @@ public class Show extends JFrame implements ActionListener {
 
         //uj kuldetes gomb
         if(e.getSource()==buttonNewMission){
-            if(mission<'5'){
+            if(mission<='6'){
                 JOptionPane.showMessageDialog(this,"Sikeresen befejezted a kuldetest");
                 canStart=false;
                 mission++;
