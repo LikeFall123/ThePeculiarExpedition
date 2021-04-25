@@ -4,7 +4,16 @@ import java.io.IOException;
 
 import static map.RandomNumber.randomNumber;
 
+/**
+ * Legeneral egy random mappet, ha nincsen bemeneti .txt fajl
+ */
+
 public class GenerateRandomMap {
+
+    /**
+     * A terkep felso fele tenger, a tobbi megadott % esellyel egy map elem
+     * @param c hanyadik kuldetes
+     */
 
     public static void genRanMap(char c){
         if(c<='5') {
@@ -44,9 +53,9 @@ public class GenerateRandomMap {
                 for(int j=0;j<Show.columns;j++){
                     if(Show.lvl[i].charAt(j)=='3'){
                         if(i-1>=4 && j-1>=0 && i+1<Show.lines && j+1<Show.lines){
-                            for(int k=i-1;k<i+1;k++){
+                            for(int k=i-1;k<=i+1;k++){
                                 StringBuilder sb = new StringBuilder(Show.lvl[k]);
-                                for(int g=j-1;g<j+1;g++){
+                                for(int g=j-1;g<=j+1;g++){
                                     if(Show.lvl[k].charAt(g)=='1'){sb.setCharAt(g,'n');}
                                 }
                                 Show.lvl[k]=sb.toString();

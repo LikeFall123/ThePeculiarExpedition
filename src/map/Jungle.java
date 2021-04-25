@@ -1,7 +1,8 @@
 package map;
 
-import javax.swing.*;
-import java.awt.*;
+/**
+ * Jungle, map elem
+ */
 
 public class Jungle extends Map{
     public Jungle() {

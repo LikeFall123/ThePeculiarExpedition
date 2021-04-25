@@ -1,5 +1,9 @@
 package team;
 
+/**
+ * rivalis felfedezok neveit es hirnevet tartalmazza
+ */
+
 public class Rival {
     private String nev;
     private int hirnev;

@@ -1,7 +1,8 @@
 package map;
 
-import javax.swing.*;
-import java.awt.*;
+/**
+ * To koduli nedves terulet
+ */
 
 public class Nedves extends Map{
 

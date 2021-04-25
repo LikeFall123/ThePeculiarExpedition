@@ -1,6 +1,9 @@
 package objects.foods;
-
 import objects.Food;
+
+/**
+ * Csokolade, specialis etel
+ */
 
 public class Csokolade extends Food {
 

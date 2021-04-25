@@ -1,6 +1,9 @@
 package objects.foods;
-
 import objects.Food;
+
+/**
+ * Hus, specialis etel
+ */
 
 public class Hus extends Food {
 

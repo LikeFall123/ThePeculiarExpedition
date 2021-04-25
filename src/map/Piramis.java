@@ -1,5 +1,8 @@
 package map;
 
+/**
+ * Arany piramis, amit meg kell talalni es kincset tartalmaz
+ */
 
 public class Piramis extends Map{
 

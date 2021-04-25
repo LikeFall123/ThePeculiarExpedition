@@ -12,8 +12,11 @@ import objects.items.Uveggolyo;
 import team.characters.*;
 import team.characters.Character;
 import team.slots.Slot;
-
 import static map.RandomNumber.randomNumber;
+
+/**
+ * Kuldetesek kozott lehet vasarolni ezeket a dolgokat
+ */
 
 public class InitShopList{
 
@@ -29,7 +32,9 @@ public class InitShopList{
     }
 
 
-
+    /**
+     * Konstruktor, veletlen szamu megfelelo cuccot eltarol
+     */
     public InitShopList() {
         forSale = new Slot[20];
         charSale = new Character[1];
@@ -75,6 +80,10 @@ public class InitShopList{
 
     }
 
+    /**
+     * Hozzaadja ezt az elemet a lehetseges vasarolhato cuccok koze
+     * @param item
+     */
     public void elraktaroz(Item item){
         for(int i=0;i<20;i++){
             if(forSale[i]==null){
@@ -90,6 +99,10 @@ public class InitShopList{
         }
     }
 
+    /**
+     * A jatekos megveszi ezt az elemet
+     * @param item
+     */
     public void consumeItem(Item item){
         for (int i = 0; i < 20; i++) {
             if (forSale[i] != null) {
@@ -108,6 +121,10 @@ public class InitShopList{
         }
     }
 
+    /**
+     * Karaktert hozzaad
+     * @param character
+     */
     public void addCharacter(Character character){
         for(int i=0;i<7;i++){
             if(charSale[i]==null){
@@ -117,6 +134,10 @@ public class InitShopList{
         }
     }
 
+    /**
+     * Karakter vasarlas
+     * @param character
+     */
     public void buyCharacter(Character character){
         for(int i=0; i<7; i++){
             if(charSale[i].getClass()==character.getClass()){

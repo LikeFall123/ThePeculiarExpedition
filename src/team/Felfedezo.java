@@ -10,6 +10,10 @@ import team.slots.Slot;
 
 import static map.RandomNumber.randomNumber;
 
+/**
+ * Felfedezo osztaly. A jatekost reprezentalja
+ */
+
 
 public class Felfedezo {
 
@@ -103,6 +107,11 @@ public class Felfedezo {
         this.fuggo = fuggo;
     }
 
+
+    /**
+     * uj karaktert vesz fel
+     * @param character
+     */
     public void addCharacter(Character character) {
         for (int i = 0; i < 3; i++) {
             if (teammates[i] == null) {
@@ -113,7 +122,11 @@ public class Felfedezo {
         }
     }
 
-    public void removeCharacter(Character character) { //torles charakter alapjan
+    /**
+     * torles charakter alapjan
+     * @param character
+     */
+    public void removeCharacter(Character character) {
         for (int i = 0; i < 3; i++) {
             if (teammates[i] == character) {
                 teammates[i] = null;
@@ -121,12 +134,19 @@ public class Felfedezo {
         }
     }
 
-    public void removeCharacter(int index) { //torles index alapjan
+    /**
+     * karkater torles index alapjan
+     * @param index
+     */
+    public void removeCharacter(int index) {
         teammates[index] = null;
         this.mozgas -= 15;
     }
 
-    public void removeCharacter() { // kitorli az utolso maradt karatert, mert csak akkor hivodik meg ha mar csak 1 maradt
+    /**
+     * kitorli az utolso maradt karatert, mert csak akkor hivodik meg ha mar csak 1 maradt
+     */
+    public void removeCharacter() {
         for (int i = 0; i < 3; i++) {
             if (teammates[i] != null) {
                 teammates[i] = null;
@@ -136,6 +156,10 @@ public class Felfedezo {
         }
     }
 
+    /**
+     * megszamolja hanyan tars van
+     * @return
+     */
     public int countTeam() {
         int k = 0;
         for (int i = 0; i < 3; i++) {
@@ -146,6 +170,10 @@ public class Felfedezo {
         return k;
     }
 
+    /**
+     * megszamolja hany slot van
+     * @return
+     */
     public int countSlots() {
         int k = 0;
         for (int i = 0; i < 20; i++) {
@@ -156,6 +184,10 @@ public class Felfedezo {
         return k;
     }
 
+    /**
+     * uj slotot ad hozza
+     * @param item
+     */
     public void addSlot(Item item) {
         for (int i = 0; i < 20; i++) {
             if (inventory[i] == null) {
@@ -179,6 +211,9 @@ public class Felfedezo {
         }
     }
 
+    /**
+     * kiirja a tarsakat
+     */
     public void printTeam() {
         for (int i = 0; i < 3; i++) {
             if (teammates[i] != null) {
@@ -187,6 +222,9 @@ public class Felfedezo {
         }
     }
 
+    /**
+     * kiirja az inventoryt
+     */
     public void printInventory() {
         for (int i = 0; i < 20; i++) {
             int num = 0;
@@ -201,13 +239,18 @@ public class Felfedezo {
         }
     }
 
+    /**
+     * kezeli ha fuggo a jatekos vagy valamelyik tarsa
+     * @param food
+     * @param charInd
+     */
     public void fuggoseg(Food food, int charInd) {
         if (food instanceof Whiskey) {
             hanyadikWhisky++;
             if (hanyadikWhisky >= 2) {
                 int r = randomNumber(0, 100);
                 if (r < 15) {
-                    if (charInd<0) {
+                    if (charInd < 0) {
                         this.setAlkoholista(true);
                     } else {
                         this.teammates[charInd].setFuggo(true);
@@ -220,7 +263,7 @@ public class Felfedezo {
             if (hanyadikKabszi >= 2) {
                 int r = randomNumber(0, 100);
                 if (r < 15) {
-                    if (charInd<0) {
+                    if (charInd < 0) {
                         this.setFuggo(true);
                     } else {
                         this.teammates[charInd].setFuggo(true);
@@ -231,7 +274,7 @@ public class Felfedezo {
         if (!(food instanceof Kabitoszer) && !(food instanceof Whiskey)) {
             hanyadikKabszi = 0;
             hanyadikWhisky = 0;
-            if (charInd<0) {
+            if (charInd < 0) {
                 this.setFuggo(false);
                 this.setAlkoholista(false);
             } else {
@@ -242,6 +285,12 @@ public class Felfedezo {
     }
 
 
+    /**
+     * elfogyasztja a kivalasztott etelt
+     * @param food
+     * @param foodIndex
+     * @param charIndex
+     */
     public void consumeFood(Food food, int foodIndex, int charIndex) {
         if (inventory[foodIndex] != null) {
             if (inventory[foodIndex].getSlots()[1] == null) {
@@ -270,7 +319,10 @@ public class Felfedezo {
         }
     }
 
-
+    /**
+     * elhasznalja a kivalasztott eszkozt
+     * @param ind
+     */
     public void consumeItem(int ind) {
         if (inventory[ind] != null) {
             if (inventory[ind].getSlots()[1] == null) {
@@ -285,7 +337,7 @@ public class Felfedezo {
                 }
             } else if (inventory[ind].getSlots()[6] != null) {
                 inventory[ind].getSlots()[6] = null;
-            } else{
+            } else {
                 for (int j = 0; j < 6; j++) {
                     if (inventory[ind].getSlots()[j] != null && inventory[ind].getSlots()[j + 1] == null) {
                         inventory[ind].getSlots()[j] = null;
@@ -296,6 +348,10 @@ public class Felfedezo {
     }
 
 
+    /**
+     * csapatban van e katona
+     * @return
+     */
     public boolean containsKatona() {
         for (int i = 0; i < 3; i++) {
             if (teammates[i] instanceof Katona) {
@@ -305,6 +361,10 @@ public class Felfedezo {
         return false;
     }
 
+    /**
+     * csapatban van e kereskedo
+     * @return
+     */
     public boolean containsKereskedo() {
         for (int i = 0; i < 3; i++) {
             if (teammates[i] instanceof Kereskedo) {
@@ -314,6 +374,10 @@ public class Felfedezo {
         return false;
     }
 
+    /**
+     * csapatban van e szamar
+     * @return
+     */
     public boolean containsSzamar() {
         for (int i = 0; i < 3; i++) {
             if (teammates[i] instanceof Szamar) {
@@ -323,6 +387,10 @@ public class Felfedezo {
         return false;
     }
 
+    /**
+     * csapatban van e felderito
+     * @return
+     */
     public boolean containsFelderito() {
         for (int i = 0; i < 3; i++) {
             if (teammates[i] instanceof Felderito) {
@@ -332,6 +400,10 @@ public class Felfedezo {
         return false;
     }
 
+    /**
+     * csapatban van e saman
+     * @return
+     */
     public boolean containsSaman() {
         for (int i = 0; i < 3; i++) {
             if (teammates[i] instanceof Saman) {
@@ -341,7 +413,9 @@ public class Felfedezo {
         return false;
     }
 
-    //rendezi a rivalisokak hirnev mennyisege szerint
+    /**
+     * rendezi a rivalisokak hirnev mennyisege szerint
+     */
     public void sortRivals() {
         for (int i = 0; i < 3; i++) {
             int index = i;
@@ -356,7 +430,9 @@ public class Felfedezo {
         }
     }
 
-    //random megnoveli a rivalisok hirnevet
+    /**
+     * random megnoveli a rivalisok hirnevet
+     */
     public void incrementRivals() {
         for (int i = 0; i < 4; i++) {
             int r = randomNumber(0, 100);
@@ -369,11 +445,24 @@ public class Felfedezo {
         sortRivals();
     }
 
+    /**
+     * kiirja a rivalisok adatait
+     * @return
+     */
     public String printRivals() {
         String s = "";
         for (int i = 0; i < 4; i++) {
             s = s + (i + 1) + ". " + rivals[i].getNev() + ":" + rivals[i].getHirnev() + "\n";
         }
         return s;
+    }
+
+    /**
+     * jatek vegen visszaadja a legjobb felfedezot
+     * @return
+     */
+    public String legjobbRival() {
+        sortRivals();
+        return rivals[0].getNev() + " : " + rivals[0].getHirnev();
     }
 }

@@ -1,5 +1,9 @@
 package team.characters;
 
+/**
+ * altalanos karakter, ennek gyerekei a specialis karakterek
+ */
+
 public class Character {
     protected String fajta;
     protected boolean alkoholista;

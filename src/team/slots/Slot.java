@@ -3,6 +3,9 @@ package team.slots;
 import objects.Item;
 import objects.items.Kincs;
 
+/**
+ * Egy slot az egy itemek tombje
+ */
 
 public class Slot {
     protected Item[] slots = new Item[7];
@@ -15,6 +18,12 @@ public class Slot {
         return slots;
     }
 
+
+    /**
+     * slothoz ad egy elemet
+     * @param item
+     * @return
+     */
     public boolean addItem(Item item) {
         if(slots[0] instanceof Kincs){
             return false;
@@ -29,6 +38,10 @@ public class Slot {
         return false;
     }
 
+    /**
+     * megszamolja, adott sloton hany elem van eltarolva
+     * @return
+     */
     private int count(){
         for(int i =0;i< slots.length;i++){
             if(slots[i]==null){

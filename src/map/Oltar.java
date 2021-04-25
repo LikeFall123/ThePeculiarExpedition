@@ -1,5 +1,9 @@
 package map;
 
+/**
+ * Oltar, amiben kincs tallahato
+ */
+
 public class Oltar extends Map{
 
     private boolean megtalalKincs;

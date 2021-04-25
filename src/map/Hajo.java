@@ -3,6 +3,10 @@ package map;
 import objects.Item;
 import team.slots.Slot;
 
+/**
+ * Hajo, egy map elem. De van sajat raktara
+ */
+
 public class Hajo extends Map {
 
     private Slot[] raktar;
@@ -16,6 +20,10 @@ public class Hajo extends Map {
         this.raktar = new Slot[20];
     }
 
+    /**
+     * Elraktarozza a jatekos ezt az elemet
+     * @param item
+     */
     public void elraktaroz(Item item) {
         for (int i = 0; i < 20; i++) {
             if (raktar[i] == null) {
@@ -31,6 +39,10 @@ public class Hajo extends Map {
         }
     }
 
+    /**
+     * Kiveszi a jatekos ezt az elemet
+     * @param ind
+     */
     public void consumeItem(int ind) {
         if (raktar[ind] != null) {
             if (raktar[ind].getSlots()[1] == null) {

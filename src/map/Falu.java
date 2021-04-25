@@ -11,7 +11,12 @@ import team.slots.Slot;
 
 import static map.RandomNumber.randomNumber;
 
+/**
+ * Falu map elem
+ */
+
 public class Falu extends Map{
+
 
     private Slot[] forSale;
     private Character[] charSale;
@@ -25,7 +30,9 @@ public class Falu extends Map{
     }
 
 
-
+    /**
+     * Konstruktor random cuccokat elraktaroz, meg par karaktert
+     */
     public Falu() {
         super("/resources/falu" ,0);
         forSale = new Slot[20];
@@ -63,6 +70,10 @@ public class Falu extends Map{
         }
     }
 
+    /**
+     * Berakja a falu inventoryjaba
+     * @param item elraktrozando elem
+     */
     public void elraktaroz(Item item){
         for(int i=0;i<20;i++){
             if(forSale[i]==null){
@@ -78,6 +89,10 @@ public class Falu extends Map{
         }
     }
 
+    /**
+     * cuccot vesz
+     * @param ind indexu elemet megveszi a jatekos
+     */
     public void consumeItem(int ind) {
         if (forSale[ind] != null) {
             if (forSale[ind].getSlots()[1] == null) {
@@ -94,6 +109,10 @@ public class Falu extends Map{
         }
     }
 
+    /**
+     * karakter hozzaadas
+     * @param character
+     */
     public void addCharacter(Character character){
         for(int i=0;i<7;i++){
             if(charSale[i]==null){
@@ -103,6 +122,10 @@ public class Falu extends Map{
         }
     }
 
+    /**
+     * megveszi a karaktert a jatekos
+     * @param character
+     */
     public void buyCharacter(Character character){
         for(int i=0; i<7; i++){
             if(charSale[i].getClass()==character.getClass()){

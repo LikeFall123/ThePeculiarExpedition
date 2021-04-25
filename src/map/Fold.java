@@ -1,7 +1,8 @@
 package map;
 
-import javax.swing.*;
-import java.awt.*;
+/**
+ * Fold terulet, map elem
+ */
 
 public class Fold extends Map{
     public Fold() {

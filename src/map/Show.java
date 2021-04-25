@@ -7,6 +7,7 @@ import objects.items.Bozotvago;
 import objects.items.Kincs;
 import team.Felfedezo;
 import team.characters.Character;
+import team.characters.Szamar;
 import team.slots.Slot;
 
 import javax.swing.*;
@@ -18,6 +19,10 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import static map.RandomNumber.randomNumber;
+
+/**
+ * Ez az osztaly vegzi az osszes GUI-s megjelenitest!
+ */
 
 public class Show extends JFrame implements ActionListener {
 
@@ -59,20 +64,21 @@ public class Show extends JFrame implements ActionListener {
     static int x =0;
     static int y=0;
     private static char mission='1'; //kuldetesek szama
-
     private static Hajo h;
     public static Felfedezo jozsi = new Felfedezo();
     public static Piramis p;
     private static InitShopList isl; //kuldetes elotti cuccok vasarlasa
     private static boolean canStart;
 
-    //beolvassa a txt bol a terkepet
+    /**
+     * beolvassa a txt bol a terkepet
+     */
     public static void read(){
 
         lines = 0;
         columns = 0;
         try {
-            File myObj = new File("src/resources/lvl" + mission + ".txt");
+            File myObj = new File("src/resources/levels/lvl" + mission + ".txt");
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine()) {
                 lvl[lines] = myReader.nextLine();
@@ -98,7 +104,9 @@ public class Show extends JFrame implements ActionListener {
 
     }
 
-
+    /**
+     * Meghatarozza az ablak meretet. Feltolti a gombos tombot JButtonokkal, es megjeleniti a kezdeti elemeket
+     */
     private void initComponents(){
         isl = new InitShopList();
         canStart=false;
@@ -147,7 +155,9 @@ public class Show extends JFrame implements ActionListener {
 //                "\nJó szórakozást!");
     }
 
-    //mit akarunk venni az elejen
+    /**
+     * mit akarunk venni az elejen
+     */
     private void initBuy(){
 
         labelInitBuy = new JLabel("Eszkozok:");
@@ -171,7 +181,11 @@ public class Show extends JFrame implements ActionListener {
         add(buttonStart);
     }
 
-    //inicalizalja a gombok ikonjat
+    /**
+     * inicalizalja a gombok ikonjat
+     * @param i
+     * @param j
+     */
     private void initPaint(int i,int j){
         Ures ures = new Ures();
         switch (lvl[i].charAt(j)) {
@@ -240,12 +254,18 @@ public class Show extends JFrame implements ActionListener {
         }
     }
 
-    //visszafesti az a gombot ahonnan ellepett jozsi
+    /**
+     * visszafesti az a gombot ahonnan ellepett jozsi
+     * @param i
+     * @param j
+     */
     private void paint(int i,int j){
         buttons[i][j].setIcon(new ImageIcon(map[i][j].getImg()));
     }
 
-    //jozsit kirajzolja
+    /**
+     * jozsit kirajzolja
+     */
     private void paintFicko(){
         int latokor = 1; //pl ha van felderitonk akkor nagyobb korben latunk
         if(jozsi.containsFelderito()){
@@ -264,10 +284,19 @@ public class Show extends JFrame implements ActionListener {
 
     }
 
+    /**
+     * valid e a hely, ahova kattintottunk
+     * @param i
+     * @param j
+     * @return
+     */
     private boolean isNext(int i, int j){
         return i >= x - 1 && i <= x + 1 && j >= y - 1 && j <= y + 1 && (i != x || j != y) && canStart;
     }
 
+    /**
+     * ha hajora lepunk, akkor jelenitse meg a dolgokat, feltoltodik az energiank
+     */
     private void hajoLep(){
         hajoInventory = new JLabel("Hajo raktar:");
         add(hajoInventory);
@@ -297,6 +326,9 @@ public class Show extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     * falura lepunk, megjeleniti a vasarlasi elemeket
+     */
     public void faluLep(){
         faluInventory = new JLabel("Falu piac:");
         add(faluInventory);
@@ -318,7 +350,10 @@ public class Show extends JFrame implements ActionListener {
     }
 
 
-    //gombok nyomkolászása
+    /**
+     * Mi tortenik akkor, ha kulonbozo gombra kattintunk. Kommentben vannak a tovabbi leirasok
+     * @param e
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         //terkepen a gombok
@@ -560,7 +595,7 @@ public class Show extends JFrame implements ActionListener {
 
         //uj kuldetes gomb
         if(e.getSource()==buttonNewMission){
-            if(mission<='6'){
+            if(mission<='5'){
                 JOptionPane.showMessageDialog(this,"Sikeresen befejezted a kuldetest");
                 canStart=false;
                 mission++;
@@ -571,7 +606,8 @@ public class Show extends JFrame implements ActionListener {
                 initComponents();
                 JOptionPane.showMessageDialog(this,jozsi.printRivals());
             }else{
-                JOptionPane.showMessageDialog(this,"Sikeresen befejezted a jatekot");
+                String legjobb = jozsi.legjobbRival();
+                JOptionPane.showMessageDialog(this,"Sikeresen befejezted a jatekot!\n"+"Legjobb felfedezo: "+jozsi.legjobbRival());
                 dispose();
             }
 
@@ -641,6 +677,9 @@ public class Show extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     * Ezt hivja meg a Main osztaly, ez altal lesz elkeszitve a Frame
+     */
     public static void build() {
         read();
         new Show().setVisible(true);

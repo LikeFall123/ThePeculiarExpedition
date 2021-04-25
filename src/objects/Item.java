@@ -1,5 +1,9 @@
 package objects;
 
+/**
+ * atalanos dolog, lehet eszkoz, kincs, vagy etel
+ */
+
 public class Item {
     protected String nev;
     protected int ertek; //mennyibe kerul

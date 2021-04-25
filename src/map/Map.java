@@ -1,11 +1,12 @@
 package map;
 
-import objects.Item;
 import team.characters.Character;
-
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Altalanos map elem, az osszes tobbi ebbol oroklodik
+ */
 
 public class Map {
     protected String path;
@@ -22,9 +23,6 @@ public class Map {
         img_f = new ImageIcon(this.getClass().getResource(this.path_f)).getImage();
     }
 
-    public String getPath() {
-        return path;
-    }
 
     public Image getImg() {
         return img;
@@ -34,25 +32,46 @@ public class Map {
 
     public int getKoltseg(){ return koltseg; }
 
-    public void consumeItem(int ind) {
-    }
+    /**
+     * Ezt csak overridolja egy gyerekosztaly
+     * @param ind
+     */
+
+    public void consumeItem(int ind) { }
+
+    /**
+     * Ezt csak overridolja egy gyerekosztaly
+     * @return
+     */
 
     public Object[] getForSale() {
         return null;
     }
 
+    /**
+     * Ezt csak overridolja egy gyerekosztaly
+     * @return
+     */
     public Object[] getCharSale() {
         return null;
     }
 
-    public void buyCharacter(Character s) {
-    }
+    /**
+     * Ezt csak overridolja egy gyerekosztaly
+     * @param s
+     */
+    public void buyCharacter(Character s) { }
 
+    /**
+     * Ezt csak overridolja egy gyerekosztaly
+     * @return
+     */
     public boolean isMegtalalKincs() {
         return false;
     }
 
-    public void setMegtalalKincs() {
-
-    }
+    /**
+     * Ezt csak overridolja egy gyerekosztaly
+     */
+    public void setMegtalalKincs() { }
 }

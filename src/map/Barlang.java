@@ -1,5 +1,9 @@
 package map;
 
+/**
+ * Barlang map elem
+ */
+
 public class Barlang extends Map{
 
     private boolean megtalalKincs;
