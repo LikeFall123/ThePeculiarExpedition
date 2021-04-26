@@ -6,6 +6,7 @@ import objects.foods.Whiskey;
 import objects.items.Bozotvago;
 import objects.items.Kincs;
 import team.Felfedezo;
+import team.characters.*;
 import team.characters.Character;
 import team.slots.Slot;
 
@@ -146,13 +147,15 @@ public class Show extends JFrame implements ActionListener {
 
         paintFicko();
         initBuy();
-        JOptionPane.showMessageDialog(this, """
-                Üdvözöllek a The Peculiar Expedition játékban.
-                Az első küldetés előtt tusz választani egy csapattársat meg alapvető eszközöket, ételeket venni.
-                Feladatod, hogy megtaláld az ararny piramist!
-                Játék közben a küldetésed, hogy különböző kincseket gyűjts, és ezeket hírnevre vagy pénzre váltsd!
-                Start gombra kattintva elindíthatod a játékot!
-                Jó szórakozást!""");
+        if(mission=='1') {
+            JOptionPane.showMessageDialog(this, """
+                    Üdvözöllek a The Peculiar Expedition játékban.
+                    Az első küldetés előtt tudsz választani egy csapattársat meg alapvető eszközöket, ételeket venni.
+                    Feladatod, hogy megtaláld az ararny piramist!
+                    Játék közben a küldetésed, hogy különböző kincseket gyűjts, és ezeket hírnevre vagy pénzre váltsd!
+                    Start gombra kattintva elindíthatod a játékot!
+                    Jó szórakozást!""");
+        }
     }
 
     /**
@@ -268,7 +271,7 @@ public class Show extends JFrame implements ActionListener {
      */
     private void paintFicko(){
         int latokor = 1; //pl ha van felderitonk akkor nagyobb korben latunk
-        if(jozsi.containsFelderito()){
+        if(jozsi.containsCharacter(new Felderito())){
             latokor = 2;
         }
         for(int i = x-latokor; i<=x+latokor; i++){
@@ -504,10 +507,10 @@ public class Show extends JFrame implements ActionListener {
             int c = boxTeam.getSelectedIndex();
             if(i.getSlots()[0] instanceof Food ){
                 jozsi.consumeFood((Food) i.getSlots()[0],boxInventory.getSelectedIndex(),c); //konzumalja mint FOOD
-                if(jozsi.containsKatona() && (i.getSlots()[0] instanceof Whiskey)){ //ha van katona, es whiskeyt ittal akkor +20% energia
+                if(jozsi.containsCharacter(new Katona()) && (i.getSlots()[0] instanceof Whiskey)){ //ha van katona, es whiskeyt ittal akkor +20% energia
                     jozsi.setEnergia(jozsi.getEnergia()*1.2);
                 }
-                if(jozsi.containsSaman() && (i.getSlots()[0] instanceof Kabitoszer)){ //ha van saman, és kábsziztál akkor +20% enegeria
+                if(jozsi.containsCharacter(new Saman()) && (i.getSlots()[0] instanceof Kabitoszer)){ //ha van saman, és kábsziztál akkor +20% enegeria
                     jozsi.setEnergia(jozsi.getEnergia()*1.2);
                 }
             }
@@ -545,7 +548,7 @@ public class Show extends JFrame implements ActionListener {
             }
             if(map[x][y] instanceof Falu){
                 double akcio=1;
-                if(jozsi.containsKereskedo()){ //ha van kereskedo, akkor olcsobban veszel
+                if(jozsi.containsCharacter(new Kereskedo())){ //ha van kereskedo, akkor olcsobban veszel
                     akcio = 0.8;
                 }
                 Slot s = (Slot) boxFaluInv.getSelectedObjects()[0];
@@ -563,7 +566,7 @@ public class Show extends JFrame implements ActionListener {
         //csapattarsat vasarolgomb
         if(e.getSource()==buttonChar){
             double akcio=1;
-            if(jozsi.containsKereskedo()){//ha van kereskedo, akkor olcsobban veszel
+            if(jozsi.containsCharacter(new Kereskedo())){//ha van kereskedo, akkor olcsobban veszel
                 akcio = 0.8;
             }
             Character s = (Character) boxChar.getSelectedObjects()[0];
@@ -580,7 +583,7 @@ public class Show extends JFrame implements ActionListener {
         //faluban elado gomb
         if(e.getSource()==buttonFaluElad){
             double akcio=1;
-            if(jozsi.containsKereskedo()){//ha van kereskedo, akkor dragabban adsz el
+            if(jozsi.containsCharacter(new Kereskedo())){//ha van kereskedo, akkor dragabban adsz el
                 akcio = 1.2;
             }
             Slot s = (Slot) boxInventory.getSelectedObjects()[0];
@@ -595,8 +598,8 @@ public class Show extends JFrame implements ActionListener {
 
         //uj kuldetes gomb
         if(e.getSource()==buttonNewMission){
-            if(mission<='5'){
-                JOptionPane.showMessageDialog(this,"Sikeresen befejezted a kuldetest");
+            if(mission<'5'){
+                JOptionPane.showMessageDialog(this,"Sikeresen befejezted a küldetést");
                 canStart=false;
                 mission++;
                 jozsi.incrementRivals();
@@ -606,7 +609,7 @@ public class Show extends JFrame implements ActionListener {
                 initComponents();
                 JOptionPane.showMessageDialog(this,jozsi.printRivals());
             }else{
-                JOptionPane.showMessageDialog(this,"Sikeresen befejezted a jatekot!\n"+"Legjobb felfedezo: "+jozsi.legjobbRival());
+                JOptionPane.showMessageDialog(this,"Sikeresen befejezted a játékot!\n"+"Legjobb felfedező: "+jozsi.legjobbRival());
                 dispose();
             }
 

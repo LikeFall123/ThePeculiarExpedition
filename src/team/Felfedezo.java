@@ -186,7 +186,7 @@ public class Felfedezo {
         }
         //ha van szamar, akkor a 8 helyett (+2 slot) 10 lehet
         int max = 8;
-        if (this.containsSzamar()) {
+        if (this.containsCharacter(new Szamar())) {
             max = 10;
         }
         if (countSlots() > max) {
@@ -266,7 +266,7 @@ public class Felfedezo {
                 setEnergia(this.energia + food.getBonus());
                 //ha van szamar, akkor a 8 helyett (+2 slot) 10 lehet
                 int max = 8;
-                if (this.containsSzamar()) {
+                if (this.containsCharacter(new Szamar())) {
                     max = 10;
                 }
                 if (countSlots() > max) {
@@ -296,7 +296,7 @@ public class Felfedezo {
                 inventory[ind] = null;
                 //ha van szamar, akkor a 8 helyett (+2 slot) 10 lehet
                 int max = 8;
-                if (this.containsSzamar()) {
+                if (this.containsCharacter(new Szamar())) {
                     max = 10;
                 }
                 if (countSlots() > max) {
@@ -314,71 +314,19 @@ public class Felfedezo {
         }
     }
 
-
     /**
-     * csapatban van e katona
+     * csapatban van e ilyen fajta tars
      * @return van e
      */
-    public boolean containsKatona() {
+    public boolean containsCharacter(Object ch) {
         for (int i = 0; i < 3; i++) {
-            if (teammates[i] instanceof Katona) {
+            if (teammates[i]!=null && teammates[i].getClass()==ch.getClass()) {
                 return true;
             }
         }
         return false;
     }
 
-    /**
-     * csapatban van e kereskedo
-     * @return van e
-     */
-    public boolean containsKereskedo() {
-        for (int i = 0; i < 3; i++) {
-            if (teammates[i] instanceof Kereskedo) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * csapatban van e szamar
-     * @return van e
-     */
-    public boolean containsSzamar() {
-        for (int i = 0; i < 3; i++) {
-            if (teammates[i] instanceof Szamar) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * csapatban van e felderito
-     * @return van e
-     */
-    public boolean containsFelderito() {
-        for (int i = 0; i < 3; i++) {
-            if (teammates[i] instanceof Felderito) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * csapatban van e saman
-     * @return van e
-     */
-    public boolean containsSaman() {
-        for (int i = 0; i < 3; i++) {
-            if (teammates[i] instanceof Saman) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     /**
      * rendezi a rivalisokak hirnev mennyisege szerint
