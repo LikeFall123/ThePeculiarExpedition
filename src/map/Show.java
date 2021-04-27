@@ -78,7 +78,8 @@ public class Show extends JFrame implements ActionListener {
         lines = 0;
         columns = 0;
         try {
-            File myObj = new File("src/resources/levels/lvl" + mission + ".txt");
+            String dir = System.getProperty("user.dir");
+            File myObj = new File(dir + "/src/resources/levels/lvl" + mission + ".txt");
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine()) {
                 lvl[lines] = myReader.nextLine();
@@ -502,7 +503,7 @@ public class Show extends JFrame implements ActionListener {
         }
 
         //use gomb
-        if(e.getSource()== buttonUse){
+        if(e.getSource()== buttonUse && boxInventory.getSelectedItem()!=null){
             Slot i = (Slot) boxInventory.getSelectedObjects()[0];
             int c = boxTeam.getSelectedIndex();
             if(i.getSlots()[0] instanceof Food ){
@@ -525,7 +526,7 @@ public class Show extends JFrame implements ActionListener {
         }
 
         //eltarol gomb
-        if(e.getSource()==buttonEltarol){
+        if(e.getSource()==buttonEltarol && boxInventory.getSelectedItem()!=null){
             Slot s = (Slot) boxInventory.getSelectedObjects()[0];
             if(s.getSlots()!=null){
                 h.elraktaroz(s.getSlots()[0]);
@@ -539,14 +540,14 @@ public class Show extends JFrame implements ActionListener {
 
         //berak gomb, az eltarol inverze
         if(e.getSource()==buttonBerak){
-            if(map[x][y] instanceof Hajo){
+            if(map[x][y] instanceof Hajo && boxHajoInv.getSelectedItem()!=null){
                 Slot s = (Slot) boxHajoInv.getSelectedObjects()[0];
                 h.consumeItem(boxHajoInv.getSelectedIndex());
                 jozsi.addSlot(s.getSlots()[0]);
                 boxHajoInv.setModel(new DefaultComboBoxModel<>(h.getRaktar()));
                 boxInventory.setModel(new DefaultComboBoxModel<>(jozsi.getInventory()));
             }
-            if(map[x][y] instanceof Falu){
+            if(map[x][y] instanceof Falu && boxFaluInv.getSelectedItem()!=null){
                 double akcio=1;
                 if(jozsi.containsCharacter(new Kereskedo())){ //ha van kereskedo, akkor olcsobban veszel
                     akcio = 0.8;
@@ -564,7 +565,7 @@ public class Show extends JFrame implements ActionListener {
         }
 
         //csapattarsat vasarolgomb
-        if(e.getSource()==buttonChar){
+        if(e.getSource()==buttonChar && boxChar.getSelectedItem()!=null){
             double akcio=1;
             if(jozsi.containsCharacter(new Kereskedo())){//ha van kereskedo, akkor olcsobban veszel
                 akcio = 0.8;
@@ -581,7 +582,7 @@ public class Show extends JFrame implements ActionListener {
         }
 
         //faluban elado gomb
-        if(e.getSource()==buttonFaluElad){
+        if(e.getSource()==buttonFaluElad && boxInventory.getSelectedItem()!=null){
             double akcio=1;
             if(jozsi.containsCharacter(new Kereskedo())){//ha van kereskedo, akkor dragabban adsz el
                 akcio = 1.2;
@@ -616,7 +617,7 @@ public class Show extends JFrame implements ActionListener {
         }
 
         //kincset hirnevre valt gomb
-        if(e.getSource()==buttonKincsHirnev){
+        if(e.getSource()==buttonKincsHirnev && boxInventory.getSelectedItem()!=null){
             Slot s = (Slot) boxInventory.getSelectedObjects()[0];
             int ind = boxInventory.getSelectedIndex();
             if(s.getSlots()[0] instanceof Kincs && s.getSlots()!=null){
@@ -628,7 +629,7 @@ public class Show extends JFrame implements ActionListener {
         }
 
         //cucct vesz kuldetes elott
-        if(e.getSource()==buttonInitBuy){
+        if(e.getSource()==buttonInitBuy && boxInitBuy.getSelectedItem()!=null){
             Slot s = (Slot) boxInitBuy.getSelectedObjects()[0];
             if(jozsi.getArany()>=s.getSlots()[0].getErtek() && s.getSlots()!=null){
                 isl.consumeItem(s.getSlots()[0]);
@@ -641,7 +642,7 @@ public class Show extends JFrame implements ActionListener {
         }
 
         //csapattarsat vesz kuldetes elott
-        if(e.getSource()==buttonInitChar){
+        if(e.getSource()==buttonInitChar && boxInitChar.getSelectedItem()!=null){
             Character s = (Character) boxInitChar.getSelectedObjects()[0];
             if(jozsi.getArany()>=150 && jozsi.countTeam()<3 && s!=null){
                 isl.buyCharacter(s);

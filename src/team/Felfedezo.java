@@ -17,17 +17,18 @@ import static map.RandomNumber.randomNumber;
 
 public class Felfedezo {
 
-    protected int arany;
-    protected double energia;
-    protected int mozgas;
-    protected int hirnev;
-    protected boolean alkoholista;
-    protected int hanyadikWhisky;
-    protected int hanyadikKabszi;
-    protected boolean fuggo;
-    protected Slot[] inventory = new Slot[20];
-    protected Character[] teammates = new Character[3];
-    protected Rival[] rivals = new Rival[4];
+    private int arany;
+    private double energia;
+    private int mozgas;
+    private int hirnev;
+    private boolean alkoholista;
+    private int hanyadikWhisky;
+    private int hanyadikKabszi;
+    private boolean fuggo;
+    private int max=8;
+    private Slot[] inventory = new Slot[10];
+    private Character[] teammates = new Character[3];
+    private Rival[] rivals = new Rival[4];
 
     public Felfedezo() {
         this.arany = 250;
@@ -154,12 +155,23 @@ public class Felfedezo {
     }
 
     /**
+     * ha van szamar a csapatban, akkor a slotok szama megnol 2-re
+     */
+    public void setMax(){
+        if (this.containsCharacter(new Szamar())) {
+            max = 10;
+        }else{
+            max=8;
+        }
+    }
+
+    /**
      * megszamolja hany slot van
      * @return hany slot
      */
     public int countSlots() {
         int k = 0;
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < max; i++) {
             if (inventory[i] != null) {
                 k++;
             }
@@ -172,9 +184,10 @@ public class Felfedezo {
      * @param item item tipus
      */
     public void addSlot(Item item) {
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < max; i++) {
             if (inventory[i] == null) {
                 inventory[i] = new Slot(item);
+                mozgas+=20;
                 break;
             } else {
                 if (!inventory[i].addItem(item)) {
@@ -183,14 +196,6 @@ public class Felfedezo {
                     break;
                 }
             }
-        }
-        //ha van szamar, akkor a 8 helyett (+2 slot) 10 lehet
-        int max = 8;
-        if (this.containsCharacter(new Szamar())) {
-            max = 10;
-        }
-        if (countSlots() > max) {
-            this.setMozgas(100 + (countSlots() - max) * 20);
         }
     }
 
@@ -264,14 +269,8 @@ public class Felfedezo {
                 fuggoseg(food, charIndex);
                 inventory[foodIndex] = null;
                 setEnergia(this.energia + food.getBonus());
-                //ha van szamar, akkor a 8 helyett (+2 slot) 10 lehet
-                int max = 8;
-                if (this.containsCharacter(new Szamar())) {
-                    max = 10;
-                }
-                if (countSlots() > max) {
-                    this.setMozgas(this.getMozgas() - 20);
-                }
+                setMax();
+                mozgas-=20;
             } else if (inventory[foodIndex].getSlots()[6] != null) {
                 inventory[foodIndex].getSlots()[6] = null;
             } else {
@@ -294,14 +293,8 @@ public class Felfedezo {
         if (inventory[ind] != null) {
             if (inventory[ind].getSlots()[1] == null) {
                 inventory[ind] = null;
-                //ha van szamar, akkor a 8 helyett (+2 slot) 10 lehet
-                int max = 8;
-                if (this.containsCharacter(new Szamar())) {
-                    max = 10;
-                }
-                if (countSlots() > max) {
-                    this.setMozgas(this.getMozgas() - 20);
-                }
+                setMax();
+                mozgas-=20;
             } else if (inventory[ind].getSlots()[6] != null) {
                 inventory[ind].getSlots()[6] = null;
             } else {

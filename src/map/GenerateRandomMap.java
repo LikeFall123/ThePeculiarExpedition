@@ -67,14 +67,10 @@ public class GenerateRandomMap {
 
             int px = randomNumber(0,Show.columns);
             int py = randomNumber(10,Show.lines);
-            System.out.println("x:"+px+" ,py:"+py);
             StringBuilder sb = new StringBuilder(Show.lvl[py]);
             sb.setCharAt(px,'*');
             Show.lvl[py]=sb.toString();
 
-            for(int i=0;i<Show.lines;i++){
-                System.out.println(Show.lvl[i]);
-            }
 
 //            try {
 //                FileWriter myWriter = new FileWriter("filename.txt");
